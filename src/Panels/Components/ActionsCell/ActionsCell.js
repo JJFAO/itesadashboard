@@ -5,11 +5,21 @@ import { SaveOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined } from 
 const ActionsCell = ({ values, handlers }) => {
     const { edit, editable, id } = values;
     const { handleUpdate, handleCancel, handleDelete, handleEditable } = handlers;
+    const isDisabled = () => {
+        for (const key in edit) {
+            if (edit.hasOwnProperty(key)) {
+                const value = edit[key];
+                if (value === '') { return true }
+            }
+        }
+        return false;
+    }
+
     return (
         (editable === id) ? (
 
             <>
-                <Button onClick={handleUpdate(id)} type="link" icon={<SaveOutlined />} disabled={!edit.name}>
+                <Button onClick={handleUpdate(id)} type="link" icon={<SaveOutlined />} disabled={isDisabled()}>
                     Guardar
                 </Button>
                 <Button onClick={handleCancel} type="link" icon={<CloseCircleOutlined />}>

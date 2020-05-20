@@ -56,6 +56,17 @@ const TableProducts = ({ userID }) => {
         setEditable(id);
     }
 
+    const handleNew = () => {
+        setEdit({
+            name: '',
+            price: 0,
+            shops: [],
+            userID
+        })
+        setProducts([...products, { key: '0', shops: [] }])
+        setEditable('0');
+    }
+
 
     const columns = [
         {
@@ -118,7 +129,7 @@ const TableProducts = ({ userID }) => {
                     }}
                 />
             </div>
-            <Button onClick={null} type="primary" disabled={null} className={styles.btnRelative}>
+            <Button onClick={handleNew} type="primary" disabled={editable !== ''} className={styles.btnRelative}>
                 <span className={styles.btnIcon}>+</span>
                 Agregar nuevo producto
             </Button>

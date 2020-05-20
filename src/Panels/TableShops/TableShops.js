@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Switch, Button, Spin, Input } from 'antd';
+import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
@@ -149,13 +149,11 @@ const TableShops = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Spin spinning={!shops.length} delay={400}>
-                    <Table
+                    <Table loading={{ spinning: !shops.length, delay: 400 }}
                         bordered
                         dataSource={shops}
                         columns={columns}
                     />
-                </Spin>
             </div>
             <Button onClick={handleNew} type="primary" disabled={editable !== ''} className={styles.btnRelative}>
                 <span className={styles.btnIcon}>+</span>
