@@ -96,8 +96,8 @@ const TableProducts = ({ userID }) => {
                         maxLength="12" autoComplete="off"
                     />
                 ) : (
-                        <span className={styles.wPrice}>$ {price} </span>
-                    )
+                    <span className={styles.wPrice}>$ {price} </span>
+                )
             )
         },
         {
@@ -110,7 +110,6 @@ const TableProducts = ({ userID }) => {
                 />
             )
         },
-
     ];
 
 

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Input } from 'antd';
+import { Table, Button } from 'antd';
 import {getCollection, collectionSnapshot, docSet} from "../../utils/firebase";
 import styles from './tableorders.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
-import ActionsCell from '../Components/ActionsCell/ActionsCell';
 
 const ordersCollection = getCollection('orders');
 
@@ -12,51 +11,11 @@ const ordersCollection = getCollection('orders');
 
 const TableOrders = ({ userID }) => {
     const [orders, setOrders] = useState([])
-    const [editable, setEditable] = useState('')
-    const [edit, setEdit] = useState({})
 
     useEffect(() => {
         collectionSnapshot(userID, ordersCollection, setOrders)
     }, [userID])
     console.log(orders);
-    
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEdit({ ...edit, [name]: value })
-    }
-
-    const handleUpdate = (id) => async () => {
-        if (editable === '0') {
-            await ordersCollection.add(edit);
-        } else {
-            docSet(ordersCollection, id, { ...edit });
-        }
-        setEditable('');
-        setEdit({});
-    }
-
-    const handleDelete = (key) => () => {
-        ordersCollection.doc(key).delete();
-    }
-
-    const removeUnsavedRow = () => {
-        if (editable === '0') {
-            const removed = orders.filter((s) => s.key !== '0')
-            setOrders([...removed])
-        }
-    }
-
-    const handleCancel = () => {
-        removeUnsavedRow();
-        setEditable('');
-        setEdit({});
-    }
-
-    const handleEditable = (id) => {
-        removeUnsavedRow();
-        setEditable(id);
-    }
 
 
     const columns = [
@@ -64,43 +23,22 @@ const TableOrders = ({ userID }) => {
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },
         {
@@ -108,85 +46,43 @@ const TableOrders = ({ userID }) => {
             className: styles.columnMoney,
             dataIndex: 'price',
             key: 'price',
-            render: (price, { key }) => (
-                (editable === key) ? (
-                    <Input name="price" defaultValue={price} type="number"
-                        onChange={handleChange} className={styles.wPrice}
-                        maxLength="12" autoComplete="off"
-                    />
-                ) : (
-                    <span className={styles.wPrice}>$ {price} </span>
-                )
+            render: (price) => (
+                <span className={styles.wPrice}>$ {price} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },{
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (name, { key }) => (
-                (editable === key) ? (
-                    <Input name="name" defaultValue={name}
-                        onChange={handleChange} className={styles.w200}
-                        maxLength="30" autoComplete="off"
-                    />
-                ) : (
-                    <span> {name} </span>
-                )
+            render: (name) => (
+                <span> {name} </span>
             )
         },
     ];
