@@ -3,4 +3,13 @@
         display: block;
         width: max-content;
     }
+    .columnMoney {
+        text-align: right;
+        min-width: 5.5rem;
+    }
+    @media (max-width: 1600px) {
+        .scrollTable {
+          overflow-x: scroll;
+        }
+    }
 }

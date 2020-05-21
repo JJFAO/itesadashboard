@@ -1,88 +1,119 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'antd';
-import {getCollection, collectionSnapshot, docSet} from "../../utils/firebase";
+import { Table, Button, Tag } from 'antd';
+import { getCollection, collectionSnapshot, docSet } from "../../utils/firebase";
 import styles from './tableorders.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
+import DropDownStates from '../Components/DropDownTypes/DropDownStates';
 
 const ordersCollection = getCollection('orders');
+const shopsCollection = getCollection('shops');
 
 
 /* --TableOrders Component-- */
 
 const TableOrders = ({ userID }) => {
     const [orders, setOrders] = useState([])
+    const [shops, setShops] = useState([])
 
     useEffect(() => {
         collectionSnapshot(userID, ordersCollection, setOrders)
     }, [userID])
     console.log(orders);
 
+    useEffect(() => {
+        collectionSnapshot(userID, shopsCollection, setShops)
+    }, [userID])
+
+    const prodsMap = (prods) => (prods.map(prod => (
+        <Tag key={prod.name}>{`${prod.name}  x${prod.quantity}`}</Tag>
+    )));
+
+    const handleState = (id) => (e) => {
+        const state = Number(e.key);
+        editProps(id, { state });
+    }
+
+    const editProps = (id, prop) => {
+        docSet(ordersCollection, id, prop);
+    }
+
 
     const columns = [
         {
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+            title: 'Numero de pedido',
+            dataIndex: 'orderNum',
+            key: 'orderNum',
+            render: (orderNum) => (
+                <span> {orderNum} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Cliente',
+            dataIndex: 'clientName',
+            key: 'clientName',
+            render: (clientName) => (
+                <span> {clientName} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Modalidad',
+            dataIndex: 'type',
+            key: 'type',
+            render: (type) => (
+                <span>
+                    {type === 0 && 'Envío'}
+                    {type === 1 && 'Takeaway'}
+                </span>
             )
         },
         {
-            title: 'Precio',
+            title: 'Total',
             className: styles.columnMoney,
-            dataIndex: 'price',
-            key: 'price',
-            render: (price) => (
-                <span className={styles.wPrice}>$ {price} </span>
+            dataIndex: 'total',
+            key: 'total',
+            render: (total) => (
+                <span className={styles.wPrice}>$ {total} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Tienda',
+            dataIndex: 'shop',
+            key: 'shop',
+            render: (shopID) => { 
+                const shopOrder = shops.find( shop => shop.key === shopID)
+                return <span> {shopOrder && shopOrder.name} </span>
+            }
+        }, {
+            title: 'Dirección',
+            dataIndex: 'address',
+            key: 'address',
+            render: (address) => (
+                <span> {address} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            render: (email) => (
+                <span> {email} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Teléfono',
+            dataIndex: 'phone',
+            key: 'phone',
+            render: (phone) => (
+                <span> {phone} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Fecha',
+            dataIndex: 'date',
+            key: 'date',
+            render: (date) => (
+                <span> {date} </span>
             )
-        },{
-            title: 'Nombre',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name) => (
-                <span> {name} </span>
+        }, {
+            title: 'Estado',
+            dataIndex: 'state',
+            key: 'state',
+            render: (state, {key}) => (
+                <DropDownStates state={state} id={key} handleState={handleState} />
             )
         },
     ];
@@ -96,16 +127,11 @@ const TableOrders = ({ userID }) => {
                     columns={columns}
                     expandable={{
                         expandedRowRender: record => (
-                            <EditableTagGroup shopsIds={record.shops} userID={userID} />
+                            prodsMap(record.products)
                         ),
-                        rowExpandable: record => record.shops.length,
                     }}
                 />
             </div>
-            <Button onClick={null} type="primary" disabled={null} className={styles.btnRelative}>
-                <span className={styles.btnIcon}>+</span>
-                Agregar nuevo producto
-            </Button>
         </div>
     );
 };
