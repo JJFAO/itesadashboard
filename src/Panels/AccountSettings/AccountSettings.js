@@ -3,12 +3,13 @@ import { Button, Spin } from 'antd';
 import styles from './accountsettings.module.scss'
 import { getCollection, docSet } from '../../utils/firebase';
 import { useState } from 'react';
+import { SketchPicker } from 'react-color';
 
 const userCollection = getCollection('users');
 
 
 const AccountSettings = ({ userID }) => {
-    const [user, setUser] = useState({ color: null });
+    const [user, setUser] = useState({ color: '' });
 
     useEffect(() => {
 
@@ -25,10 +26,8 @@ const AccountSettings = ({ userID }) => {
     }
 
     const handleChange = (e) => {
-        //no se llama con el evento onchange
         console.log('evento', e);
         setUser({ color: e.target.value });
-
     }
 
     const handleSave = () => {
@@ -58,15 +57,14 @@ const AccountSettings = ({ userID }) => {
                 <p>Color de Tema:</p>
                 <div style={{ display: 'flex' }}>
                     <Spin spinning={!user.color} delay="150">
+                        {/* <SketchPicker
+                            onChangeComplete={handleChange}
+                        /> */}
                         <input id='color' type="color"
-                        className={styles.inputColor}
+                            className={styles.inputColor}
                             value={user.color}
                             onChange={handleChange}
                         ></input>
-                        {/* <button className={styles.btnColor}
-                            style={{ background: user.color }}
-                            onClick={() => { window.document.getElementById('color').click() }}
-                        > </button> */}
                     </Spin>
                 </div>
 

@@ -32,7 +32,7 @@ const EditableTagGroup = ({ userID, shopsIds }) => {
         }
     }, [userID, shopsIds]);
 
-    function handleChange(value) {
+    const handleChange = (value) => {
         console.log(`selected ${value}`);
     }
 
