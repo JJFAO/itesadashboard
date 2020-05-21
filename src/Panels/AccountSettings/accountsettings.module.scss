@@ -1,0 +1,25 @@
+.AccountSettings {
+  .userUrl {
+    margin: 2rem 0;
+  }
+  .btnWhats {
+    background-color: #33de53;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+  .btnWhats:hover {
+    background-color: #67ff83;
+    color: white;
+    border-color: #67ff83;
+  }
+  .btnSave,
+  .btnWhats {
+    width: 12.6rem;
+  }
+  .inputColor {
+    width: 10rem;
+  }
+  .btnSave {
+    margin-top: 2rem;
+  }
+}
