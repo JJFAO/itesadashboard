@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Breadcrumb, Button, Layout, PageHeader, Typography} from "antd";
+import {Breadcrumb, Button, Layout, PageHeader} from "antd";
 import styles from './theapp.module.scss';
 import logo from '../images/logogv.png'
 import itesa from '../images/logo-itesa.png'
@@ -12,7 +12,6 @@ import TableOrders from '../Panels/TableOrders/TableOrders';
 import AccountSettings from '../Panels/AccountSettings/AccountSettings';
 
 const { Content } = Layout;
-const { Title } = Typography;
 
 export function TheApp({user}) {
 
@@ -46,12 +45,12 @@ export function TheApp({user}) {
                             type="primary" ghost={true}
                             icon={<MenuOutlined />}
                         />
-                        <img src={logo} className={styles.title}/>
+                        <img src={logo} className={styles.title} alt="logo getvital"/>
                     </span>
                 }
                 extra={
                     <a className={styles.itesaLogo} href={'https://itesa.co'}>
-                        <img src={itesa} className={styles.title}/>
+                        <img src={itesa} className={styles.title} alt="logo de itesa"/>
                     </a>
                 }
             />

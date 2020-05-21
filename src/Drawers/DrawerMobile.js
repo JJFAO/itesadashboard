@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Menu, Layout, Drawer} from "antd";
+import React, {useEffect} from 'react';
+import {Menu, Drawer} from "antd";
 import {UserOutlined, ShoppingCartOutlined, HomeOutlined, InboxOutlined} from '@ant-design/icons';
 import itesa from '../images/logo-itesa.png'
 import styles from './drawer.module.scss'
@@ -15,7 +15,7 @@ export function DrawerMobile({setItemOpen, mobileOpen, setMobileOpen}) {
 
     return (
         <Drawer
-            title={<img className={styles.itesaLogo} src={itesa}/>}
+            title={<img className={styles.itesaLogo} src={itesa} alt="logo de itesa"/>}
             placement="left"
             closable={true}
             onClose={()=>{setMobileOpen(false)}}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { getCollection, collectionSnapshot, docSet } from "../../utils/firebase";
 import styles from './tableorders.module.scss';
-import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
 import DropDownStates from '../Components/DropDownTypes/DropDownStates';
 
 const ordersCollection = getCollection('orders');
@@ -17,10 +16,6 @@ const TableOrders = ({ userID }) => {
 
     useEffect(() => {
         collectionSnapshot(userID, ordersCollection, setOrders)
-    }, [userID])
-    console.log(orders);
-
-    useEffect(() => {
         collectionSnapshot(userID, shopsCollection, setShops)
     }, [userID])
 

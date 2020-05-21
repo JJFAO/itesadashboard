@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { Menu, Layout} from "antd";
 import styles from './drawer.module.scss'
 import {UserOutlined, ShoppingCartOutlined, HomeOutlined, InboxOutlined} from '@ant-design/icons';
-const {  Sider, Content } = Layout;
-const { SubMenu } = Menu;
+const {  Sider } = Layout;
 
 export function Drawer({setItemOpen}) {
 
