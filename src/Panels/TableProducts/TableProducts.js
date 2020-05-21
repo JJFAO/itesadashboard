@@ -21,7 +21,12 @@ const TableProducts = ({ userID }) => {
     
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setEdit({ ...edit, [name]: value })
+        console.log(name,value);
+        
+        if (name === 'price' && (value < 0 || value > 10000)) { return }
+        else {
+            setEdit({ ...edit, [name]: value })
+        }
     }
 
     const handleUpdate = (id) => async () => {
@@ -59,7 +64,7 @@ const TableProducts = ({ userID }) => {
     const handleNew = () => {
         setEdit({
             name: '',
-            price: 0,
+            price: '',
             shops: [],
             userID
         })
@@ -121,14 +126,20 @@ const TableProducts = ({ userID }) => {
                     columns={columns}
                     expandable={{
                         expandedRowRender: record => (
-                            <EditableTagGroup shopsIds={record.shops} userID={userID} />
+                            <EditableTagGroup
+                                shopsIds={record.shops}
+                                userID={userID}
+                                prodID={record.key}
+                            />
                         ),
-                        rowExpandable: record => record.shops.length,
                         expandIconColumnIndex: 4,
                     }}
                 />
             </div>
-            <Button onClick={handleNew} type="primary" disabled={editable !== ''} className={styles.btnRelative}>
+            <Button onClick={handleNew} type="primary"
+                disabled={editable !== ''}
+                className={styles.btnRelative}
+            >
                 <span className={styles.btnIcon}>+</span>
                 Agregar nuevo producto
             </Button>

@@ -26,7 +26,6 @@ const AccountSettings = ({ userID }) => {
     }
 
     const handleChange = (e) => {
-        console.log('evento', e);
         setUser({ color: e.target.value });
     }
 

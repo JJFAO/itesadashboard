@@ -1,43 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import styles from './editableTagGroup.module.scss'
-import { getCollection } from "../../../utils/firebase";
+import { getCollection, docSet, collectionSnapshot } from "../../../utils/firebase";
 const { Option } = Select;
 
+const shopsCollection = getCollection('shops');
+const productsCollection = getCollection('products');
 
-const EditableTagGroup = ({ userID, shopsIds }) => {
+
+const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
     const [tags, setTags] = useState([]);
+    const [options, setOptions] = useState([])
 
     useEffect(() => {
 
         if (userID) {
-            const shopsCollection = getCollection('shops');
-            const arrayPromises = shopsIds.map(id => {
-                return shopsCollection.doc(id).get()
-            })
+            // const arrayPromises = shopsIds.map(id => {
+            //     return shopsCollection.doc(id).get()
+            // })
 
-            Promise.all(arrayPromises)
-                .then(docs => {
-                    let shops = [];
-                    docs.forEach(doc => {
-                        const shop = doc.data()
-                        shop.id = doc.id;
-                        shops.push(shop);
-                    })
-                    setTags(shops)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            // Promise.all(arrayPromises)
+            //     .then(docs => {
+            //         let shops = [];
+            //         docs.forEach(doc => {
+            //             const shop = doc.data()
+            //             shop.id = doc.id;
+            //             shops.push(shop);
+            //         })
+            //         setTags(shops)
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
+            collectionSnapshot(userID, shopsCollection, setOptions)
         }
     }, [userID, shopsIds]);
 
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
+    const handleChange = (shops) => {
+        docSet(productsCollection, prodID, {shops})
     }
 
-    const options = tags.map((tag) => (
-        <Option key={tag.id}>{tag.name}</Option>
+    const optionsMap = options.map((shop) => (
+        <Option key={shop.key}>{shop.name}</Option>
     ));
 
 
@@ -50,7 +54,7 @@ const EditableTagGroup = ({ userID, shopsIds }) => {
                 placeholder="Seleccione tiendas.."
                 onChange={handleChange}
             >
-                {options}
+                {optionsMap}
             </Select>}
         </div>
     );
