@@ -51,7 +51,7 @@ const TableShops = ({ userID }) => {
         if (editable === '0') {
             await shopsCollection.add(edit);
         } else {
-            docSet(shopsCollection, id, {...edit});
+            docSet(shopsCollection, id, edit);
         }
         setEditable('');
         setEdit({});

@@ -3,7 +3,7 @@ import { Button, Popconfirm } from 'antd'
 import { SaveOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const ActionsCell = ({ values, handlers }) => {
-    const { edit, editable, id } = values;
+    const { edit, editable, id, obj } = values;
     const { handleUpdate, handleCancel, handleDelete, handleEditable } = handlers;
     const isDisabled = () => {
         for (const key in edit) {
@@ -28,7 +28,7 @@ const ActionsCell = ({ values, handlers }) => {
             </>
         ) : (
             <>
-                <Button onClick={() => handleEditable(id)} type="link" icon={<EditOutlined />}>
+                <Button onClick={() => handleEditable(obj)} type="link" icon={<EditOutlined />}>
                     Editar
                 </Button>
                 <Popconfirm

@@ -20,20 +20,23 @@ const TableProducts = ({ userID }) => {
 
     
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        console.log(name,value);
-        
-        if (name === 'price' && (value < 0 || value > 10000)) { return }
-        else {
-            setEdit({ ...edit, [name]: value })
+        let { name, value } = e.target;
+        if (name === 'price') {
+            if ((value < 0 || value > 100000)){
+                return;
+            } else {
+                value = value.replace(/^0+/, '');
+            }
         }
+        setEdit({ ...edit, [name]: value });
     }
 
     const handleUpdate = (id) => async () => {
+        edit.price = parseInt(edit.price)
         if (editable === '0') {
             await productsCollection.add(edit);
         } else {
-            docSet(productsCollection, id, { ...edit });
+            await docSet(productsCollection, id, edit);
         }
         setEditable('');
         setEdit({});
@@ -56,9 +59,10 @@ const TableProducts = ({ userID }) => {
         setEdit({});
     }
 
-    const handleEditable = (id) => {
+    const handleEditable = (obj) => {
         removeUnsavedRow();
-        setEditable(id);
+        setEdit(obj);
+        setEditable(obj.key);
     }
 
     const handleNew = () => {
@@ -96,9 +100,10 @@ const TableProducts = ({ userID }) => {
             key: 'price',
             render: (price, { key }) => (
                 (editable === key) ? (
-                    <Input name="price" defaultValue={price} type="number"
+                    <Input name="price" type="number"
                         onChange={handleChange} className={styles.wPrice}
                         maxLength="12" autoComplete="off"
+                        value={edit.price}
                     />
                 ) : (
                     <span className={styles.wPrice}>$ {price} </span>
@@ -109,8 +114,8 @@ const TableProducts = ({ userID }) => {
             title: 'Acciones',
             dataIndex: 'key',
             key: 'key',
-            render: (key) => (
-                <ActionsCell values={{ editable, edit, id: key }}
+            render: (key, obj) => (
+                <ActionsCell values={{ editable, edit, id: key, obj }}
                     handlers={{ handleUpdate, handleCancel, handleDelete, handleEditable }}
                 />
             )
@@ -132,6 +137,7 @@ const TableProducts = ({ userID }) => {
                                 prodID={record.key}
                             />
                         ),
+                        rowExpandable: record => (record.key !== '0'),
                         expandIconColumnIndex: 4,
                     }}
                 />

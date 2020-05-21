@@ -9,29 +9,11 @@ const productsCollection = getCollection('products');
 
 
 const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
-    const [tags, setTags] = useState([]);
     const [options, setOptions] = useState([])
 
     useEffect(() => {
 
         if (userID) {
-            // const arrayPromises = shopsIds.map(id => {
-            //     return shopsCollection.doc(id).get()
-            // })
-
-            // Promise.all(arrayPromises)
-            //     .then(docs => {
-            //         let shops = [];
-            //         docs.forEach(doc => {
-            //             const shop = doc.data()
-            //             shop.id = doc.id;
-            //             shops.push(shop);
-            //         })
-            //         setTags(shops)
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     })
             collectionSnapshot(userID, shopsCollection, setOptions)
         }
     }, [userID, shopsIds]);
