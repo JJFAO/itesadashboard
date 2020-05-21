@@ -91,7 +91,7 @@ const TableOrders = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !orders.length, delay: 400 }}
+                <Table loading={{ spinning: !orders.length, delay: 200 }}
                     dataSource={orders}
                     columns={columns}
                     expandable={{

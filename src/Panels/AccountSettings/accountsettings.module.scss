@@ -9,7 +9,10 @@
   }
   .btnWhats:hover {
     background-color: #67ff83;
-    color: white;
+    border-color: #67ff83;
+  }
+  .btnWhats:focus {
+    background-color: #67ff83;
     border-color: #67ff83;
   }
   .btnSave,
@@ -17,7 +20,13 @@
     width: 12.6rem;
   }
   .inputColor {
-    width: 10rem;
+    // display: none;
+    height: 2.35rem;
+    width: 6rem;
+  }
+  .btnColor {
+    height: 3rem;
+    width: 3rem;
   }
   .btnSave {
     margin-top: 2rem;

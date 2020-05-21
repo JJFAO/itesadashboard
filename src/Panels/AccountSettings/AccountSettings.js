@@ -1,18 +1,44 @@
-import React from 'react';
-import { Button, Input } from 'antd';
-import AnchorLink from 'antd/lib/anchor/AnchorLink';
+import React, { useEffect } from 'react';
+import { Button, Spin } from 'antd';
 import styles from './accountsettings.module.scss'
+import { getCollection, docSet } from '../../utils/firebase';
+import { useState } from 'react';
+
+const userCollection = getCollection('users');
+
 
 const AccountSettings = ({ userID }) => {
+    const [user, setUser] = useState({ color: null });
+
+    useEffect(() => {
+
+        if (userID) {
+            userCollection.doc(userID).onSnapshot((doc) => {
+                const { color } = doc.data();
+                setUser({ color });
+            })
+        }
+    }, [userID]);
 
     const handleClick = () => {
-        console.log('w');
+        console.log('whatsapp');
+    }
+
+    const handleChange = (e) => {
+        //no se llama con el evento onchange
+        console.log('evento', e);
+        setUser({ color: e.target.value });
+
     }
 
     const handleSave = () => {
-        console.log('s');
+        const { color } = user;
+        docSet(userCollection, userID, { color })
     }
-    const userUrl = userID && userID.replace(/\s/g, '').toLowerCase();
+
+
+    const userUrl = userID && userID.replace(/\s/g, '');
+
     return (
         <div className={styles.AccountSettings}>
             <div className={styles.userUrl}>
@@ -30,7 +56,20 @@ const AccountSettings = ({ userID }) => {
             </div>
             <div>
                 <p>Color de Tema:</p>
-                <Input type="color" className={styles.inputColor}></Input>
+                <div style={{ display: 'flex' }}>
+                    <Spin spinning={!user.color} delay="150">
+                        <input id='color' type="color"
+                        className={styles.inputColor}
+                            value={user.color}
+                            onChange={handleChange}
+                        ></input>
+                        {/* <button className={styles.btnColor}
+                            style={{ background: user.color }}
+                            onClick={() => { window.document.getElementById('color').click() }}
+                        > </button> */}
+                    </Spin>
+                </div>
+
             </div>
             <div>
                 <Button onClick={handleSave} type="primary" className={styles.btnSave}>
