@@ -33,12 +33,27 @@ const TableOrders = ({ userID }) => {
         updateDoc(ordersCollection, id, prop);
     }
 
+    const handleTableChange = (pagination, filters, sorter) => {
+        // this.fetch({
+        //   sortField: sorter.field,
+        //   sortOrder: sorter.order,
+        //   pagination,
+        //   ...filters,
+        // });
+        console.log(pagination, filters, sorter);
+        
+      };
+
+
+    const shopsMap = shops.map( ({key, name}) => ({value: key, text:name}) )
 
     const columns = [
         {
             title: 'Nº de pedido',
             dataIndex: 'orderNum',
             key: 'orderNum',
+            sorter: (a, b) => a.orderNum - b.orderNum,
+            defaultSortOrder: 'descend',
             render: (orderNum) => (
                 <span> {orderNum} </span>
             )
@@ -72,6 +87,8 @@ const TableOrders = ({ userID }) => {
             title: 'Tienda',
             dataIndex: 'shop',
             key: 'shop',
+            filters: shopsMap,
+            onFilter: (value, record) => record.shop === value,
             render: (shopID) => {
                 const shopOrder = shops.find(shop => shop.key === shopID)
                 return <span> {shopOrder && shopOrder.name} </span>
@@ -108,8 +125,16 @@ const TableOrders = ({ userID }) => {
             title: 'Estado',
             dataIndex: 'state',
             key: 'state',
+            filters: [
+                { text: `Pendiente`, value: 0 },
+                { text: `En camino`, value: 1 },
+                { text: `Entregado`, value: 2 },
+            ],
+            onFilter: (value, record) => record.state === value,
             render: (state, { key }) => (
-                <DropDownStates state={state} id={key} handleState={handleState} />
+                <DropDownStates id={key} state={state}
+                    handleState={handleState}
+                />
             )
         },
     ];
@@ -130,6 +155,7 @@ const TableOrders = ({ userID }) => {
                             prodsMap(record.products)
                         ),
                     }}
+                    onChange={handleTableChange}
                 />
             </div>
         </div>
