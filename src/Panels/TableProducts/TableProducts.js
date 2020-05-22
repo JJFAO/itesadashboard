@@ -14,9 +14,9 @@ const TableProducts = ({ userID }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
 
-    useEffect(() => {
+    useEffect(() => (
         collectionSnapshot(userID, productsCollection, setProducts)
-    }, [userID])
+    ), [userID])
 
     
     const handleChange = (e) => {

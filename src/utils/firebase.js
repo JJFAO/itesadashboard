@@ -17,7 +17,7 @@ const getCollection = (id) => (firebase.firestore().collection(id))
 
 const collectionSnapshot = (userID, collection, setArray) => {
     if (userID) {
-        collection.where('userID', '==', userID)
+        return collection.where('userID', '==', userID)
             .onSnapshot(function (docs) {
                 let array = [];
                 docs.forEach(doc => {

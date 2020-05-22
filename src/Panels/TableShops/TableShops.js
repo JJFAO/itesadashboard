@@ -3,7 +3,7 @@ import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
-import {getCollection, collectionSnapshot, docSet} from "../../utils/firebase";
+import { getCollection, collectionSnapshot, docSet } from "../../utils/firebase";
 
 
 const shopsCollection = getCollection('shops');
@@ -16,11 +16,11 @@ const TableShops = ({ userID }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
 
-    useEffect(() => {
+    useEffect(() => (
         collectionSnapshot(userID, shopsCollection, setShops)
-    }, [userID])
+    ), [userID])
 
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEdit({ ...edit, [name]: value })
@@ -88,8 +88,8 @@ const TableShops = ({ userID }) => {
         setEditable('');
         setEdit({});
     }
-    
-    
+
+
     const handleEditable = (id) => {
         removeUnsavedRow();
         setEditable(id);
@@ -104,10 +104,10 @@ const TableShops = ({ userID }) => {
             render: (name, { key }) => (
                 (editable === key) ? (
                     <Input name="name" defaultValue={name}
-                    onChange={handleChange} className={styles.w200}
-                    maxLength="30" autoComplete="off"
+                        onChange={handleChange} className={styles.w200}
+                        maxLength="30" autoComplete="off"
                     />
-                ) : (
+                ):(
                     <span className={styles.w200}> {name} </span>
                 )
             )
@@ -138,8 +138,8 @@ const TableShops = ({ userID }) => {
             dataIndex: 'key',
             key: 'key',
             render: (key) => (
-                <ActionsCell values={{editable, edit, id: key}}
-                    handlers={{handleUpdate, handleCancel, handleDelete, handleEditable}}
+                <ActionsCell values={{ editable, edit, id: key }}
+                    handlers={{ handleUpdate, handleCancel, handleDelete, handleEditable }}
                 />
             )
         },
@@ -149,11 +149,11 @@ const TableShops = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                    <Table loading={{ spinning: !shops.length, delay: 400 }}
-                        bordered
-                        dataSource={shops}
-                        columns={columns}
-                    />
+                <Table loading={{ spinning: !shops.length, delay: 400 }}
+                    bordered
+                    dataSource={shops}
+                    columns={columns}
+                />
             </div>
             <Button onClick={handleNew} type="primary" disabled={editable !== ''} className={styles.btnRelative}>
                 <span className={styles.btnIcon}>+</span>

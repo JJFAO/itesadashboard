@@ -15,8 +15,12 @@ const TableOrders = ({ userID }) => {
     const [shops, setShops] = useState([])
 
     useEffect(() => {
-        collectionSnapshot(userID, ordersCollection, setOrders)
-        collectionSnapshot(userID, shopsCollection, setShops)
+        const unSubOrders = collectionSnapshot(userID, ordersCollection, setOrders)
+        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops)
+        return () => {
+            unSubOrders && unSubOrders();
+            unSubShops && unSubShops();
+        }
     }, [userID])
 
     const handleState = (id) => (e) => {
@@ -67,8 +71,8 @@ const TableOrders = ({ userID }) => {
             title: 'Tienda',
             dataIndex: 'shop',
             key: 'shop',
-            render: (shopID) => { 
-                const shopOrder = shops.find( shop => shop.key === shopID)
+            render: (shopID) => {
+                const shopOrder = shops.find(shop => shop.key === shopID)
                 return <span> {shopOrder && shopOrder.name} </span>
             }
         }, {
@@ -103,7 +107,7 @@ const TableOrders = ({ userID }) => {
             title: 'Estado',
             dataIndex: 'state',
             key: 'state',
-            render: (state, {key}) => (
+            render: (state, { key }) => (
                 <DropDownStates state={state} id={key} handleState={handleState} />
             )
         },

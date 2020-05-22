@@ -10,26 +10,24 @@ const productsCollection = getCollection('products');
 const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
     const [options, setOptions] = useState([])
 
-    useEffect(() => {
-
-        if (userID) {
-            collectionSnapshot(userID, shopsCollection, setOptions)
-        }
-    }, [userID, shopsIds]);
+    useEffect(() => (
+        collectionSnapshot(userID, shopsCollection, setOptions)
+    ), [userID]);
 
 
     const handleChange = (shops) => {
-        docSet(productsCollection, prodID, {shops})
+        docSet(productsCollection, prodID, { shops })
     }
 
     const optionsMap = options.map((shop) => (
-        {label: shop.name, value: shop.key}
+        { label: shop.name, value: shop.key }
     ));
-
+    
 
     return (
         <div className={styles.EditableTagGroup} >
-            {options.length !== 0 && <Select 
+            {options.length !== 0 &&
+            <Select
                 defaultValue={shopsIds}
                 id="select"
                 mode="multiple"
