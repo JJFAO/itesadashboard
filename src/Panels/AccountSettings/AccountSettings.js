@@ -3,13 +3,14 @@ import { Button, Spin } from 'antd';
 import styles from './accountsettings.module.scss'
 import { getCollection, docSet } from '../../utils/firebase';
 import { useState } from 'react';
-import { SketchPicker } from 'react-color';
+import { ChromePicker  } from 'react-color';
 
 const userCollection = getCollection('users');
 
 
 const AccountSettings = ({ userID }) => {
-    const [user, setUser] = useState({ color: '' });
+    const [user, setUser] = useState({ color: '' })
+    const [spin, setSpin] = useState(true)
 
     useEffect(() => {
 
@@ -17,6 +18,7 @@ const AccountSettings = ({ userID }) => {
             userCollection.doc(userID).onSnapshot((doc) => {
                 const { color } = doc.data();
                 setUser({ color });
+                setSpin(false);
             })
         }
     }, [userID]);
@@ -26,7 +28,7 @@ const AccountSettings = ({ userID }) => {
     }
 
     const handleChange = (e) => {
-        setUser({ color: e.target.value });
+        setUser({ color: e.hex });
     }
 
     const handleSave = () => {
@@ -55,15 +57,17 @@ const AccountSettings = ({ userID }) => {
             <div>
                 <p>Color de Tema:</p>
                 <div style={{ display: 'flex' }}>
-                    <Spin spinning={!user.color} delay="150">
-                        {/* <SketchPicker
+                    <Spin spinning={spin} delay="150">
+                        <ChromePicker
+                            width="180px"
                             onChangeComplete={handleChange}
-                        /> */}
-                        <input id='color' type="color"
+                            color={user.color || '#9146f7'}
+                        />
+                        {/* <input id='color' type="color"
                             className={styles.inputColor}
                             value={user.color}
                             onChange={handleChange}
-                        ></input>
+                        ></input> */}
                     </Spin>
                 </div>
 
