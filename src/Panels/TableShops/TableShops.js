@@ -62,20 +62,13 @@ const TableShops = ({ userID }) => {
     const removeShopInProducts = (id) => {
         products.forEach(({ shops, key }) => {
             if (shops.includes(id)) {
-                console.log('rem');
-                
                 updateDoc(productsCollection, key, { shops: removeItem(id) })
             }
-            // const index = shops.findIndex((shop) => shop === id);
-            // if (index >= 0) {
-            //     shops.splice(index, 1);
-            //     updateDoc(productsCollection, key, { shops })
-            // }
         })
     }
 
     const handleDelete = (id) => () => {
-        // shopsCollection.doc(id).delete();
+        shopsCollection.doc(id).delete();
         removeShopInProducts(id);
     }
 
