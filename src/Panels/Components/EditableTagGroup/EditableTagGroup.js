@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import styles from './editableTagGroup.module.scss'
-import { getCollection, docSet, collectionSnapshot } from "../../../utils/firebase";
+import { getCollection, updateDoc, collectionSnapshot } from "../../../utils/firebase";
 
 const shopsCollection = getCollection('shops');
 const productsCollection = getCollection('products');
@@ -16,7 +16,7 @@ const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
 
 
     const handleChange = (shops) => {
-        docSet(productsCollection, prodID, { shops })
+        updateDoc(productsCollection, prodID, { shops })
     }
 
     const optionsMap = options.map((shop) => (

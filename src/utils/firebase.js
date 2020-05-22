@@ -30,11 +30,11 @@ const collectionSnapshot = (userID, collection, setArray) => {
     }
 }
 
-const docSet = (collection, id, prop) => {
+const updateDoc = async (collection, id, prop) => {
     const doc = collection.doc(id);
-    doc.set(prop, { merge: true });
+    await doc.update(prop);
 }
 
 const firebaseApp = firebase;
 
-export {firebaseApp, getCollection, collectionSnapshot, docSet};
+export {firebaseApp, getCollection, collectionSnapshot, updateDoc};

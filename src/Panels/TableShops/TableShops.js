@@ -3,22 +3,28 @@ import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
-import { getCollection, collectionSnapshot, docSet } from "../../utils/firebase";
-
+import { getCollection, collectionSnapshot, updateDoc } from "../../utils/firebase";
 
 const shopsCollection = getCollection('shops');
+const productsCollection = getCollection('products');
 
 
 /* --TableShops Component-- */
 
 const TableShops = ({ userID }) => {
+    const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
 
-    useEffect(() => (
-        collectionSnapshot(userID, shopsCollection, setShops)
-    ), [userID])
+    useEffect(() => {
+        const unSubProducts = collectionSnapshot(userID, productsCollection, setProducts);
+        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops);
+        return () => {
+            unSubProducts && unSubProducts();
+            unSubShops && unSubShops();
+        }
+    }, [userID])
 
 
     const handleChange = (e) => {
@@ -26,42 +32,47 @@ const TableShops = ({ userID }) => {
         setEdit({ ...edit, [name]: value })
     }
 
-
     const editProps = (id, prop) => {
         if (id === '0') {
             setEdit({ ...edit, ...prop });
         } else {
-            docSet(shopsCollection, id, prop);
+            updateDoc(shopsCollection, id, prop);
         }
     }
-
 
     const handleType = (id) => (e) => {
         const type = Number(e.key);
         editProps(id, { type });
     }
 
-
     const handleSwitch = (id) => (enabled) => {
         editProps(id, { enabled });
     };
-
 
     const handleUpdate = (id) => async () => {
         if (editable === '0') {
             await shopsCollection.add(edit);
         } else {
-            docSet(shopsCollection, id, edit);
+            await updateDoc(shopsCollection, id, edit);
         }
         setEditable('');
         setEdit({});
     }
 
-
-    const handleDelete = (key) => () => {
-        shopsCollection.doc(key).delete();
+    const removeShopInProducts = (id) => {
+        products.forEach(({ shops, key }) => {
+            const index = shops.findIndex((shop) => shop === id);
+            if (index >= 0) {
+                shops.splice(index, 1);
+                updateDoc(productsCollection, key, { shops })
+            }
+        })
     }
 
+    const handleDelete = (id) => () => {
+        shopsCollection.doc(id).delete();
+        removeShopInProducts(id);
+    }
 
     const handleNew = () => {
         setEdit({
@@ -74,7 +85,6 @@ const TableShops = ({ userID }) => {
         setEditable('0');
     }
 
-
     const removeUnsavedRow = () => {
         if (editable === '0') {
             const removed = shops.filter((s) => s.key !== '0')
@@ -82,13 +92,11 @@ const TableShops = ({ userID }) => {
         }
     }
 
-
     const handleCancel = () => {
         removeUnsavedRow();
         setEditable('');
         setEdit({});
     }
-
 
     const handleEditable = (id) => {
         removeUnsavedRow();
@@ -164,7 +172,3 @@ const TableShops = ({ userID }) => {
 };
 
 export default TableShops;
-
-
-
-

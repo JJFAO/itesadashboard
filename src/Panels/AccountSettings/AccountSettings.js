@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Spin } from 'antd';
 import styles from './accountsettings.module.scss'
-import { getCollection, docSet } from '../../utils/firebase';
+import { getCollection, updateDoc } from '../../utils/firebase';
 import { useState } from 'react';
 import { ChromePicker  } from 'react-color';
 
@@ -33,7 +33,7 @@ const AccountSettings = ({ userID }) => {
 
     const handleSave = () => {
         const { color } = user;
-        docSet(userCollection, userID, { color })
+        updateDoc(userCollection, userID, { color })
     }
 
 

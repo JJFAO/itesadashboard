@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Tag } from 'antd';
-import { getCollection, collectionSnapshot, docSet } from "../../utils/firebase";
+import { getCollection, collectionSnapshot, updateDoc } from "../../utils/firebase";
 import styles from './tableorders.module.scss';
 import DropDownStates from '../Components/DropDownTypes/DropDownStates';
 
@@ -22,6 +22,7 @@ const TableOrders = ({ userID }) => {
             unSubShops && unSubShops();
         }
     }, [userID])
+    
 
     const handleState = (id) => (e) => {
         const state = Number(e.key);
@@ -29,7 +30,7 @@ const TableOrders = ({ userID }) => {
     }
 
     const editProps = (id, prop) => {
-        docSet(ordersCollection, id, prop);
+        updateDoc(ordersCollection, id, prop);
     }
 
 
@@ -113,10 +114,10 @@ const TableOrders = ({ userID }) => {
         },
     ];
 
+
     const prodsMap = (prods) => (prods.map(prod => (
         <Tag key={prod.name}>{`${prod.name}  x ${prod.quantity}`}</Tag>
     )));
-
 
     return (
         <div className={styles.tableContent}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Input } from 'antd';
-import {getCollection, collectionSnapshot, docSet} from "../../utils/firebase";
+import {getCollection, collectionSnapshot, updateDoc} from "../../utils/firebase";
 import styles from './tableproducts.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
@@ -36,14 +36,14 @@ const TableProducts = ({ userID }) => {
         if (editable === '0') {
             await productsCollection.add(edit);
         } else {
-            await docSet(productsCollection, id, edit);
+            await updateDoc(productsCollection, id, edit);
         }
         setEditable('');
         setEdit({});
     }
 
-    const handleDelete = (key) => () => {
-        productsCollection.doc(key).delete();
+    const handleDelete = (id) => () => {
+        productsCollection.doc(id).delete();
     }
 
     const removeUnsavedRow = () => {
