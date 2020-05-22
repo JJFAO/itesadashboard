@@ -19,10 +19,6 @@ const TableOrders = ({ userID }) => {
         collectionSnapshot(userID, shopsCollection, setShops)
     }, [userID])
 
-    const prodsMap = (prods) => (prods.map(prod => (
-        <Tag key={prod.name}>{`${prod.name}  x${prod.quantity}`}</Tag>
-    )));
-
     const handleState = (id) => (e) => {
         const state = Number(e.key);
         editProps(id, { state });
@@ -35,7 +31,7 @@ const TableOrders = ({ userID }) => {
 
     const columns = [
         {
-            title: 'Numero de pedido',
+            title: 'Nº de pedido',
             dataIndex: 'orderNum',
             key: 'orderNum',
             render: (orderNum) => (
@@ -112,6 +108,10 @@ const TableOrders = ({ userID }) => {
             )
         },
     ];
+
+    const prodsMap = (prods) => (prods.map(prod => (
+        <Tag key={prod.name}>{`${prod.name}  x ${prod.quantity}`}</Tag>
+    )));
 
 
     return (

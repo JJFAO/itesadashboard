@@ -1,4 +1,7 @@
 .tableContent {
+    tbody > tr:hover > td {
+        background-color: #f9f0ff !important;
+    }
     .maxContent {
         display: block;
         width: max-content;
@@ -6,6 +9,9 @@
     .columnMoney {
         text-align: right;
         min-width: 5.5rem;
+    }
+    thead tr th:first-child::before {
+        content: 'Ver detalle';
     }
     @media (max-width: 1600px) {
         .scrollTable {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import styles from './editableTagGroup.module.scss'
 import { getCollection, docSet, collectionSnapshot } from "../../../utils/firebase";
-const { Option } = Select;
 
 const shopsCollection = getCollection('shops');
 const productsCollection = getCollection('products');
@@ -18,12 +17,13 @@ const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
         }
     }, [userID, shopsIds]);
 
+
     const handleChange = (shops) => {
         docSet(productsCollection, prodID, {shops})
     }
 
     const optionsMap = options.map((shop) => (
-        <Option key={shop.key}>{shop.name}</Option>
+        {label: shop.name, value: shop.key}
     ));
 
 
@@ -35,8 +35,9 @@ const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
                 mode="multiple"
                 placeholder="Seleccione tiendas.."
                 onChange={handleChange}
+                showArrow
+                options={optionsMap}
             >
-                {optionsMap}
             </Select>}
         </div>
     );
