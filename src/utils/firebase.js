@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import 'firebase/firestore';
 
+
 const config = {
     apiKey: "AIzaSyCVOsLHW_DOxOr2U7K1WqbGBtCqOWnl_94",
     authDomain: "itesacheckouts.firebaseapp.com",
@@ -35,6 +36,8 @@ const updateDoc = async (collection, id, prop) => {
     await doc.update(prop);
 }
 
+const removeItem = (value) => (firebase.firestore.FieldValue.arrayRemove(value))
+
 const firebaseApp = firebase;
 
-export {firebaseApp, getCollection, collectionSnapshot, updateDoc};
+export {firebaseApp, getCollection, collectionSnapshot, updateDoc, removeItem};
