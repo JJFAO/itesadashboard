@@ -23,9 +23,6 @@ const AccountSettings = ({ userID }) => {
         }
     }, [userID]);
 
-    const handleClick = () => {
-        console.log('whatsapp');
-    }
 
     const handleChange = (e) => {
         setUser({ color: e.hex });
@@ -37,20 +34,25 @@ const AccountSettings = ({ userID }) => {
     }
 
 
-    const userUrl = userID && userID.replace(/\s/g, '');
+    const userUrl = userID && (
+        'http://checkout.itesa.co/' + userID.replace(/\s/g, '')
+    );
+    const urlEncoded = encodeURIComponent(userUrl);
 
     return (
         <div className={styles.AccountSettings}>
             <div className={styles.userUrl}>
                 <p>
                     Link a tu negocio:{' '}
-                    <a href={`http://checkout.itesa.co/${userUrl}`} target="_blank" rel="noopener noreferrer">
-                        <span>http://checkout.itesa.co/{userUrl}</span>
+                    <a href={userUrl} target="_blank" rel="noopener noreferrer">
+                        <span>{userUrl}</span>
                     </a>
                 </p>
             </div>
             <div>
-                <Button onClick={handleClick} className={styles.btnWhats}>
+                <Button className={styles.btnWhats}
+                    href={`https://wa.me/?text=${urlEncoded}`}
+                >
                     Compartir en WhatsApp
                 </Button>
             </div>
@@ -63,17 +65,12 @@ const AccountSettings = ({ userID }) => {
                             onChangeComplete={handleChange}
                             color={user.color || '#9146f7'}
                         />
-                        {/* <input id='color' type="color"
-                            className={styles.inputColor}
-                            value={user.color}
-                            onChange={handleChange}
-                        ></input> */}
                     </Spin>
                 </div>
 
             </div>
             <div>
-                <Button onClick={handleSave} type="primary" className={styles.btnSave}>
+                <Button onClick={handleSave} type="primary" className={styles.btnSave} >
                     Guardar Cambios
                 </Button>
             </div>
