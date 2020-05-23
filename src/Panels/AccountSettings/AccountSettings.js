@@ -14,13 +14,13 @@ const AccountSettings = ({ userID }) => {
 
     useEffect(() => {
 
-        if (userID) {
+        if (userID) (
             userCollection.doc(userID).onSnapshot((doc) => {
                 const { color } = doc.data();
                 setUser({ color });
                 setSpin(false);
             })
-        }
+        )
     }, [userID]);
 
 
