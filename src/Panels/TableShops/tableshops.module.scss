@@ -16,4 +16,7 @@
           overflow-x: scroll;
         }
     }
+    tbody > tr:hover > td {
+        background-color: #f9f0ff !important;
+    }
 }

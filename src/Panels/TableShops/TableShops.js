@@ -96,9 +96,11 @@ const TableShops = ({ userID }) => {
         setEdit({});
     }
 
-    const handleEditable = (id) => {
+    const handleEditable = ({key}) => {
+        console.log(key);
+        
         removeUnsavedRow();
-        setEditable(id);
+        setEditable(key);
     }
 
 
@@ -143,8 +145,8 @@ const TableShops = ({ userID }) => {
             title: 'Acciones',
             dataIndex: 'key',
             key: 'key',
-            render: (key) => (
-                <ActionsCell values={{ editable, edit, id: key }}
+            render: (key, obj) => (
+                <ActionsCell values={{ editable, edit, id: key, obj }}
                     handlers={{ handleUpdate, handleCancel, handleDelete, handleEditable }}
                 />
             )
@@ -155,7 +157,7 @@ const TableShops = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !shops.length, delay: 400 }}
+                <Table loading={{ spinning: !shops.length, delay: 100 }}
                     bordered
                     dataSource={shops}
                     columns={columns}
