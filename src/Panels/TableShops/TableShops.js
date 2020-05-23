@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
-import { getCollection, collectionSnapshot, updateDoc, removeItem } from "../../utils/firebase";
+import { getCollection, updateDoc, removeItem } from "../../utils/firebase";
 
 const shopsCollection = getCollection('shops');
 const productsCollection = getCollection('products');
@@ -11,20 +11,9 @@ const productsCollection = getCollection('products');
 
 /* --TableShops Component-- */
 
-const TableShops = ({ userID }) => {
-    const [products, setProducts] = useState([])
-    const [shops, setShops] = useState([])
+const TableShops = ({ userID, shops, setShops, products }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
-
-    useEffect(() => {
-        const unSubProducts = collectionSnapshot(userID, productsCollection, setProducts);
-        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops);
-        return () => {
-            unSubProducts && unSubProducts();
-            unSubShops && unSubShops();
-        }
-    }, [userID])
 
 
     const handleChange = (e) => {
@@ -97,8 +86,6 @@ const TableShops = ({ userID }) => {
     }
 
     const handleEditable = ({key}) => {
-        console.log(key);
-        
         removeUnsavedRow();
         setEditable(key);
     }

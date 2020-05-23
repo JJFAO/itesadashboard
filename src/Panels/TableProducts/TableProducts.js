@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Table, Button, Input } from 'antd';
-import {getCollection, collectionSnapshot, updateDoc} from "../../utils/firebase";
+import {getCollection, updateDoc} from "../../utils/firebase";
 import styles from './tableproducts.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
@@ -9,14 +9,9 @@ const productsCollection = getCollection('products');
 
 
 /* --TableProducts Component-- */
-const TableProducts = ({ userID }) => {
-    const [products, setProducts] = useState([])
+const TableProducts = ({ userID, products, setProducts }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
-
-    useEffect(() => (
-        collectionSnapshot(userID, productsCollection, setProducts)
-    ), [userID])
 
     
     const handleChange = (e) => {
@@ -126,7 +121,7 @@ const TableProducts = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !products.length, delay: 400 }}
+                <Table loading={{ spinning: !products.length, delay: 200 }}
                     dataSource={products}
                     columns={columns}
                     expandable={{

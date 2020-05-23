@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { TheApp } from "./TheApp/TheApp";
-import {firebaseApp} from "./utils/firebase";
+import {firebaseApp, fireBaseServices} from "./utils/firebase";
 import 'firebase/firestore';
 import 'firebase/auth';
 
@@ -22,6 +22,7 @@ function App() {
                 db.collection('users').where('uid', '==', uid)
                     .onSnapshot(function (docs) {
                         docs.forEach(function (doc) {
+                            fireBaseServices.setUser(doc.id)
                             let theUser = doc.data();
                             theUser.userID = doc.id;
                             setUser(theUser);

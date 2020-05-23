@@ -1,38 +1,43 @@
-import React, {useState, useEffect} from 'react';
-import {Breadcrumb, Button, Layout, PageHeader} from "antd";
+import React, { useState, useEffect } from 'react';
+import { Breadcrumb, Button, Layout, PageHeader } from "antd";
 import styles from './theapp.module.scss';
 import logo from '../images/logogv.png'
 import itesa from '../images/logo-itesa.png'
-import {Drawer as TheDrawer} from "../Drawers/Drawer";
-import {DrawerMobile} from "../Drawers/DrawerMobile";
-import {MenuOutlined} from '@ant-design/icons';
+import { Drawer as TheDrawer } from "../Drawers/Drawer";
+import { DrawerMobile } from "../Drawers/DrawerMobile";
+import { MenuOutlined } from '@ant-design/icons';
 import TableShops from '../Panels/TableShops/TableShops';
 import TableProducts from '../Panels/TableProducts/TableProducts';
 import TableOrders from '../Panels/TableOrders/TableOrders';
 import AccountSettings from '../Panels/AccountSettings/AccountSettings';
+import { fireBaseServices } from '../utils/firebase';
 
 const { Content } = Layout;
 
-export function TheApp({user}) {
 
+export function TheApp({ user }) {
+    const { userID } = user;
     const [itemOpen, setItemOpen] = useState('pedidos');
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [products, setProducts] = useState([])
+    const [orders, setOrders] = useState([])
+    const [shops, setShops] = useState([])
 
     useEffect(() => {
+        const unSubOrders = fireBaseServices.getOrdersSnapshot(setOrders)
+        const unSubShops = fireBaseServices.getShopsSnapshot(setShops)
+        const unSubProducts = fireBaseServices.getProductsSnapshot(setProducts)
+        return () => {
+            unSubOrders && unSubOrders();
+            unSubProducts && unSubProducts();
+            unSubShops && unSubShops();
+        }
+    }, [userID])
 
-    },[]);
 
-    const {userID} = user;
-    
-    const contentBody =  (
-        (itemOpen === 'pedidos' && <TableOrders userID={userID} />) ||
-        (itemOpen === 'tiendas' && <TableShops userID={userID} />) ||
-        (itemOpen === 'Productos' && <TableProducts userID={userID} />) ||
-        (itemOpen === 'Mi cuenta' && <AccountSettings userID={userID} />)
-    )
     return (
         <div className={styles.theHome}>
-            
+
             <PageHeader
                 className={styles.appBar}
                 backIcon={false}
@@ -41,28 +46,56 @@ export function TheApp({user}) {
                 title={
                     <span>
                         <Button className={styles.hambButton}
-                            onClick={()=>setMobileOpen(!mobileOpen)}
+                            onClick={() => setMobileOpen(!mobileOpen)}
                             type="primary" ghost={true}
                             icon={<MenuOutlined />}
                         />
-                        <img src={logo} className={styles.title} alt="logo getvital"/>
+                        <img src={logo} className={styles.title} alt="logo getviral" />
                     </span>
                 }
                 extra={
                     <a className={styles.itesaLogo} href={'https://itesa.co'}>
-                        <img src={itesa} className={styles.title} alt="logo de itesa"/>
+                        <img src={itesa} className={styles.title} alt="logo de itesa" />
                     </a>
                 }
             />
-            <Layout style={{backgroundColor: '#ffffff'}}>
-                <TheDrawer setItemOpen={setItemOpen}/>
-                <DrawerMobile setItemOpen={setItemOpen} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
+
+            <Layout style={{ backgroundColor: '#ffffff' }}>
+                <TheDrawer setItemOpen={setItemOpen} />
+                <DrawerMobile setItemOpen={setItemOpen} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
                 <Content className={styles.content}>
                     <Breadcrumb className={styles.breadcrumb}>
                         <Breadcrumb.Item>{itemOpen}</Breadcrumb.Item>
                     </Breadcrumb>
                     <div>
-                    {contentBody}
+                        {
+                            ((itemOpen === 'pedidos') &&
+                                <TableOrders
+                                    userID={userID}
+                                    orders={orders}
+                                    setOrders={setOrders}
+                                    shops={shops}
+                                />
+                            ) ||
+                            ((itemOpen === 'tiendas') &&
+                                <TableShops
+                                    userID={userID}
+                                    shops={shops}
+                                    setShops={setShops}
+                                    products={products}
+                                />
+                            ) ||
+                            ((itemOpen === 'Productos') &&
+                                <TableProducts
+                                    userID={userID}
+                                    products={products}
+                                    setProducts={setProducts}
+                                />
+                            ) ||
+                            ((itemOpen === 'Mi cuenta') &&
+                                <AccountSettings userID={userID} />
+                            )
+                        }
                     </div>
                 </Content>
             </Layout>

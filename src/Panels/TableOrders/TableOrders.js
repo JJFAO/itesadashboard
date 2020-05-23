@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Table, Tag } from 'antd';
-import { getCollection, collectionSnapshot, updateDoc } from "../../utils/firebase";
+import { getCollection, updateDoc } from "../../utils/firebase";
 import styles from './tableorders.module.scss';
 import DropDownStates from '../Components/DropDownTypes/DropDownStates';
 
 const ordersCollection = getCollection('orders');
-const shopsCollection = getCollection('shops');
 
 
 /* --TableOrders Component-- */
 
-const TableOrders = ({ userID }) => {
-    const [orders, setOrders] = useState([])
-    const [shops, setShops] = useState([])
-
-    useEffect(() => {
-        const unSubOrders = collectionSnapshot(userID, ordersCollection, setOrders)
-        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops)
-        return () => {
-            unSubOrders && unSubOrders();
-            unSubShops && unSubShops();
-        }
-    }, [userID])
+const TableOrders = ({ userID, orders, setOrders, shops }) => {
     
 
     const handleState = (id) => (e) => {
