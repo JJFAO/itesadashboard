@@ -7,11 +7,11 @@ const shopsCollection = getCollection('shops');
 const productsCollection = getCollection('products');
 
 
-const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
+const EditableTagGroup = ({ userID, prodID, shopsIds, setLoading }) => {
     const [options, setOptions] = useState([])
 
     useEffect(() => (
-        collectionSnapshot(userID, shopsCollection, setOptions)
+        collectionSnapshot(userID, shopsCollection, setOptions, setLoading)
     ), [userID]);
 
 

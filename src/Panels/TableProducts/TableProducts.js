@@ -13,9 +13,10 @@ const TableProducts = ({ userID }) => {
     const [products, setProducts] = useState([])
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => (
-        collectionSnapshot(userID, productsCollection, setProducts)
+        collectionSnapshot(userID, productsCollection, setProducts, setLoading)
     ), [userID])
 
     
@@ -126,7 +127,7 @@ const TableProducts = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !products.length, delay: 400 }}
+                <Table loading={loading}
                     dataSource={products}
                     columns={columns}
                     expandable={{
@@ -135,6 +136,7 @@ const TableProducts = ({ userID }) => {
                                 shopsIds={record.shops}
                                 userID={userID}
                                 prodID={record.key}
+                                setLoading={setLoading}
                             />
                         ),
                         rowExpandable: record => (record.key !== '0'),

@@ -16,10 +16,11 @@ const TableShops = ({ userID }) => {
     const [shops, setShops] = useState([])
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unSubProducts = collectionSnapshot(userID, productsCollection, setProducts);
-        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops);
+        const unSubProducts = collectionSnapshot(userID, productsCollection, setProducts, setLoading);
+        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops, setLoading);
         return () => {
             unSubProducts && unSubProducts();
             unSubShops && unSubShops();
@@ -157,7 +158,7 @@ const TableShops = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !shops.length, delay: 100 }}
+                <Table loading={loading}
                     bordered
                     dataSource={shops}
                     columns={columns}

@@ -1,0 +1,15 @@
+$loaderBackground: #716AFC;
+$loaderColor: #FFFFFF;
+$panelBackground: #716AFC;
+$panelColor: #FFFFFF;
+$buttonBackground: #FFFFFF;
+$buttonColor: #716AFC;
+
+:export {
+  loaderBackground: $loaderBackground;
+  loaderColor: $loaderColor;
+  panelBackground: $panelBackground;
+  panelColor: $panelColor;
+  buttonBackground:$buttonBackground;
+  buttonColor:$buttonColor
+}

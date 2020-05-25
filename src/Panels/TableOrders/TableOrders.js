@@ -13,10 +13,10 @@ const shopsCollection = getCollection('shops');
 const TableOrders = ({ userID }) => {
     const [orders, setOrders] = useState([])
     const [shops, setShops] = useState([])
-
+    const [loading, setLoading] = useState(true)
     useEffect(() => {
-        const unSubOrders = collectionSnapshot(userID, ordersCollection, setOrders)
-        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops)
+        const unSubOrders = collectionSnapshot(userID, ordersCollection, setOrders, setLoading)
+        const unSubShops = collectionSnapshot(userID, shopsCollection, setShops, setLoading)
         return () => {
             unSubOrders && unSubOrders();
             unSubShops && unSubShops();
@@ -147,7 +147,7 @@ const TableOrders = ({ userID }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !orders.length, delay: 200 }}
+                <Table loading={loading}
                     dataSource={orders}
                     columns={columns}
                     expandable={{

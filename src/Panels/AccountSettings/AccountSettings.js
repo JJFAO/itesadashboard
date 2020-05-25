@@ -35,7 +35,7 @@ const AccountSettings = ({ userID }) => {
 
 
     const userUrl = userID && (
-        'http://checkout.itesa.co/' + userID.replace(/\s/g, '')
+        'https://stores.itesa.co/' + userID.replace(/\s/g, '')
     );
     const urlEncoded = encodeURIComponent(userUrl);
 
@@ -51,7 +51,7 @@ const AccountSettings = ({ userID }) => {
             </div>
             <div>
                 <Button className={styles.btnWhats}
-                    href={`https://wa.me/?text=${urlEncoded}`}
+                    href={`https://api.whatsapp.com/send?text=${urlEncoded}`}
                 >
                     Compartir en WhatsApp
                 </Button>

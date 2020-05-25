@@ -16,7 +16,7 @@ firebase.initializeApp(config);
 
 const getCollection = (id) => (firebase.firestore().collection(id))
 
-const collectionSnapshot = (userID, collection, setArray) => {
+const collectionSnapshot = (userID, collection, setArray, setLoading) => {
     if (userID) {
         return collection.where('userID', '==', userID)
             .onSnapshot(function (docs) {
@@ -27,6 +27,7 @@ const collectionSnapshot = (userID, collection, setArray) => {
                     array.push(element)
                 })
                 setArray(array);
+                setLoading(false)
             })
     }
 }
