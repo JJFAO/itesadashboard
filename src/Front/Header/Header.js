@@ -12,28 +12,29 @@ export default function Header({ classes }) {
         
             <div className={classes.circle}>
 
-                <nav position="static" className={classes.navstyle}>
+                <nav  className={classes.navstyle}>
                     <Toolbar>
                         <Typography className={classes.navmenu}>
                             <img src={gvlogo} className={classes.logo} alt="" />
                         </Typography>
                         <Hidden smDown>
-                        <Button color="inherit"><Link to="/" className={classes.linklogin}>Home</Link></Button>
-                        <Button color="inherit"><Link to="/login" className={classes.linklogin1} >
-                            Login
-                        </Link></Button>
+                        <Link to="/" className={classes.linklogin}><Button  color="inherit" >Home</Button></Link>
                         </Hidden>
+                        <Link to="/login" className={classes.linklogin1}><Button color="inherit"  >
+                            Login
+                       </Button> </Link>
+                        
                     </Toolbar>
                 </nav>
               
                 <Typography variant="h3" className={classes.labeltitle}>
-                    Incorpora un carrito a tu sitio,
+                    Incorporá un carrito a tu sitio,
                 </Typography>
                 <Typography variant="h3" className={classes.labeltitle1}>
                     Solo con un click...
                 </Typography>
                 <Typography  className={classes.hoylabel}>
-                    Hoy te convetis en e-commerce <span role="img" aria-label="cara alegre">😊</span>
+                    Hoy te convetís en e-commerce <span role="img" aria-label="cara alegre">😊</span>
                 </Typography>
                 <Button
                     type="submit"

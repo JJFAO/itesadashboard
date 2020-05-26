@@ -301,9 +301,16 @@ const LandingPage = makeStyles((theme) => ({
     textDecoration: "none",
   },
   linklogin1: {
-    marginRight: "100px",
+    [theme.breakpoints.down('sm')]: { 
+        marginTop: '12px',
+        color: "white",
+        textDecoration: "none",
+    },
+    [theme.breakpoints.up('sm')]: {
+    marginRight: "80px",
     color: "white",
     textDecoration: "none",
+    }
   },
   margintop: {
     [theme.breakpoints.down('sm')]: {
@@ -564,7 +571,7 @@ const LandingPage = makeStyles((theme) => ({
   points: {
     position: 'absolute',
     width: '50%',
-    bottom: '32rem',
+    top: '50px',
     left: '40%'
   },
   sponsors: {

@@ -14,13 +14,13 @@ export default function IntroImage({ classes }) {
             <div className={classes.logimage}>
                 <img src={gvlogo} className={classes.loglogo} alt="" />
                 <Typography variant="h3" className={classes.logtitle}>
-                    Incorpora un carrito a tu sitio,
+                    Incorporá un carrito a tu sitio,
                 </Typography>
                 <Typography variant="h3" className={classes.logtitle1}>
                     Solo con un click...
                 </Typography>
                 <Typography className={classes.loglabel}>
-                    Hoy te convetis en e-commerce <span role="img" aria-label="cara alegre">😊</span>
+                    Hoy te convetís en e-commerce <span role="img" aria-label="cara alegre">😊</span>
                 </Typography>
                 <Hidden smDown>
                     <img src={img1} className={classes.imglog1} alt="" />

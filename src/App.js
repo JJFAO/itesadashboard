@@ -21,7 +21,7 @@ function App() {
         firebaseApp.auth().onAuthStateChanged(function (user) {
             setLoading(true)
            /* user = { uid: 'bP28xX6AzMOB2JZLb0eNuG7kL202' }*/
-            console.log(user)
+            /* console.log(user) */
             if (user) {
                 setLogin(true)
                 let uid = user.uid;

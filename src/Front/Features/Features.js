@@ -10,7 +10,7 @@ export default function Sponsors({ classes }) {
         <div className={classes.imgfondopoints}>
 
             <Typography variant="h3" className={classes.labeltitlefeatures}>
-                ¿PORQUE USAR EL CHECKOUT DE GETVIRAL?
+                ¿POR QUÉ USAR EL CHECKOUT DE GETVIRAL?
                 </Typography>
             <Grid
                 container
@@ -104,7 +104,7 @@ export default function Sponsors({ classes }) {
                         className={classes.submitregb1}
                     >
 
-                        Proba gratis ya!
+                        Probá gratis ya!
                         </Button>
                 </Link>
             </Grid>

@@ -47,7 +47,7 @@ export default function Pricing({ classes }) {
                                 className={classes.submitregb}
                             >
                                 
-                                Proba gratis ya!
+                                Probá gratis ya!
                            
                             </Button>
                         </Link>
