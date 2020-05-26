@@ -14,7 +14,7 @@ const EditableTagGroup = ({ prodID, shopsIds, shops }) => {
     const optionsMap = shops.map((shop) => (
         { label: shop.name, value: shop.key }
     ));
-    
+
 
     return (
         <div className={styles.EditableTagGroup} >

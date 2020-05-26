@@ -3,9 +3,9 @@ import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
-import { getCollection, arrayRemove, fireBaseServices } from "../../utils/firebase";
+import { arrayRemove, fireBaseServices } from "../../utils/firebase";
 
-const shopsCollection = getCollection('shops');
+const shopsCollection = fireBaseServices.getCollectionRef('shops');
 
 
 /* --TableShops Component-- */

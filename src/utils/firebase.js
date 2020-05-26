@@ -14,12 +14,9 @@ const config = {
 };
 firebase.initializeApp(config);
 
-const getCollection = (id) => (firebase.firestore().collection(id))
-
+const firebaseApp = firebase;
 
 const arrayRemove = (value) => (firebase.firestore.FieldValue.arrayRemove(value));
-
-const firebaseApp = firebase;
 
 const fireBaseServices = {
     setUser(userID) {
@@ -75,7 +72,4 @@ const fireBaseServices = {
 }
 
 
-export {
-    firebaseApp, getCollection, 
-    arrayRemove, fireBaseServices
-};
+export { firebaseApp, arrayRemove, fireBaseServices };

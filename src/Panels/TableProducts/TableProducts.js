@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Table, Button, Input } from 'antd';
-import {getCollection, fireBaseServices} from "../../utils/firebase";
+import { fireBaseServices } from "../../utils/firebase";
 import styles from './tableproducts.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
 
-const productsCollection = getCollection('products');
+const productsCollection = fireBaseServices.getCollectionRef('products');
 
 
 /* --TableProducts Component-- */
@@ -13,11 +13,11 @@ const TableProducts = ({ userID, products, setProducts, shops }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
 
-    
+
     const handleChange = (e) => {
         let { name, value } = e.target;
         if (name === 'price') {
-            if ((value < 0 || value > 100000)){
+            if ((value < 0 || value > 100000)) {
                 return;
             } else {
                 value = value.replace(/^0+/, '');
