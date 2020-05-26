@@ -38,36 +38,47 @@ const fireBaseServices = {
                         array.push(element)
                     })
                     setArrayState(array);
+                    // .onSnapshot(function (snapshot) {
+                    //     let array = [];
+                    // snapshot.docChanges().forEach(change => {
+                    //     if (change.type === "added") {
+                    //         console.log("New data: ", change.doc.data());
+                    //         const element = change.doc.data();
+                    //         element.key = change.doc.id;
+                    //         array.push(element)
+                    //     }
+                    // })
+                    // setArrayState((prev) => [ ...prev, ...array]); //mover aqui funcion para modificar el state condicionalmente
                 })
         }
+    },
+    updateDoc(collectionID, docID, prop) {
+        const collectionProducts = this.getCollectionRef(collectionID);
+        return collectionProducts.doc(docID).update(prop);
     },
     getProductsSnapshot(setArrayState) {
         return this.getCollectionSnapshot('products', setArrayState);
     },
     updateProductDoc(docID, prop) {
-        const collectionProducts = this.getCollectionRef('products');
-        return collectionProducts.doc(docID).update(prop);
+        return this.updateDoc('products', docID, prop);
     },
     getOrdersSnapshot(setArrayState) {
         return this.getCollectionSnapshot('orders', setArrayState);
     },
     updateOrderDoc(docID, prop) {
-        const collectionOrders = this.getCollectionRef('orders');
-        return collectionOrders.doc(docID).update(prop);
+        return this.updateDoc('orders', docID, prop);
     },
     getShopsSnapshot(setArrayState) {
         return this.getCollectionSnapshot('shops', setArrayState);
     },
     updateShopDoc(docID, prop) {
-        const collectionShops = this.getCollectionRef('shops');
-        return collectionShops.doc(docID).update(prop);
+        return this.updateDoc('shops', docID, prop);
     },
     // getUserSnapshot(setArrayState) {
     //     return this.getCollectionSnapshot('shops', setArrayState);
     // },
     updateUserDoc(docID, prop) {
-        const collectionShops = this.getCollectionRef('users');
-        return collectionShops.doc(docID).update(prop);
+        return this.updateDoc('users', docID, prop);
     },
 }
 

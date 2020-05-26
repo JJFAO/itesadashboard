@@ -7,7 +7,7 @@ import { fireBaseServices } from '../../utils/firebase';
 
 /* --TableOrders Component-- */
 
-const TableOrders = ({ userID, orders, setOrders, shops }) => {
+const TableOrders = ({ orders, shops }) => {
     
 
     const handleState = (id) => (e) => {

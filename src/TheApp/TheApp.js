@@ -71,9 +71,7 @@ export function TheApp({ user }) {
                         {
                             ((itemOpen === 'pedidos') &&
                                 <TableOrders
-                                    userID={userID}
                                     orders={orders}
-                                    setOrders={setOrders}
                                     shops={shops}
                                 />
                             ) ||
