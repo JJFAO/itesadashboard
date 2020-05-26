@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Button, Spin } from 'antd';
 import styles from './accountsettings.module.scss'
-import { getCollection, updateDoc } from '../../utils/firebase';
+import { fireBaseServices } from '../../utils/firebase';
 import { useState } from 'react';
-import { ChromePicker  } from 'react-color';
+import { ChromePicker } from 'react-color';
 
-const userCollection = getCollection('users');
+const userCollection = fireBaseServices.getCollectionRef('users');
 
 
 const AccountSettings = ({ userID }) => {
@@ -13,14 +13,13 @@ const AccountSettings = ({ userID }) => {
     const [spin, setSpin] = useState(true)
 
     useEffect(() => {
-
-        if (userID) (
+        if (userID) {
             userCollection.doc(userID).onSnapshot((doc) => {
                 const { color } = doc.data();
                 setUser({ color });
                 setSpin(false);
             })
-        )
+        }
     }, [userID]);
 
 
@@ -30,7 +29,7 @@ const AccountSettings = ({ userID }) => {
 
     const handleSave = () => {
         const { color } = user;
-        updateDoc(userCollection, userID, { color })
+        fireBaseServices.updateUserDoc(userID, { color })
     }
 
 
@@ -58,16 +57,13 @@ const AccountSettings = ({ userID }) => {
             </div>
             <div>
                 <p>Color de Tema:</p>
-                <div style={{ display: 'flex' }}>
-                    <Spin spinning={spin} delay="150">
-                        <ChromePicker
-                            width="180px"
-                            onChangeComplete={handleChange}
-                            color={user.color || '#9146f7'}
-                        />
-                    </Spin>
-                </div>
-
+                <Spin spinning={spin} delay="150">
+                    <ChromePicker
+                        width="198px"
+                        onChangeComplete={handleChange}
+                        color={user.color || '#9146f7'}
+                    />
+                </Spin>
             </div>
             <div>
                 <Button onClick={handleSave} type="primary" className={styles.btnSave} >

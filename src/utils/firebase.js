@@ -16,33 +16,8 @@ firebase.initializeApp(config);
 
 const getCollection = (id) => (firebase.firestore().collection(id))
 
-const getOwnCollection = (collectionID, userID) => {
-    const collection = firebase.firestore().collection(collectionID)
-    return collection.where('userID', '==', userID)
-}
 
-const collectionSnapshot = (userID, collection, setArray) => {
-    if (userID) {
-        return collection.where('userID', '==', userID)
-            .onSnapshot(function (docs) {
-                let array = [];
-                docs.forEach(doc => {
-                    const element = doc.data();
-                    element.key = doc.id;
-                    array.push(element)
-                })
-                setArray(array);
-            })
-    }
-}
-
-const updateDoc = async (collection, id, prop) => {
-    const doc = collection.doc(id);
-    await doc.update(prop);
-}
-
-
-const removeItem = (value) => (firebase.firestore.FieldValue.arrayRemove(value))
+const arrayRemove = (value) => (firebase.firestore.FieldValue.arrayRemove(value));
 
 const firebaseApp = firebase;
 
@@ -50,54 +25,57 @@ const fireBaseServices = {
     setUser(userID) {
         this.userID = userID;
     },
+    getCollectionRef(collectionID) {
+        return firebase.firestore().collection(collectionID);
+    },
     getCollectionSnapshot(collectionID, setArrayState) {
         if (this.userID) {
-            const collection = firebase.firestore()
-                .collection(collectionID)
-                .where('userID', '==', this.userID);
+            const collection = this.getCollectionRef(collectionID);
 
-            return collection.onSnapshot(function (docs) {
-                let array = [];
-                docs.forEach(doc => {
-                    const element = doc.data();
-                    element.key = doc.id;
-                    array.push(element)
+            return collection.where('userID', '==', this.userID)
+                .onSnapshot(function (docs) {
+                    let array = [];
+                    docs.forEach(doc => {
+                        const element = doc.data();
+                        element.key = doc.id;
+                        array.push(element)
+                    })
+                    setArrayState(array);
                 })
-                setArrayState(array);
-            })
         }
     },
     getProductsSnapshot(setArrayState) {
-        return this.getCollectionSnapshot('products', setArrayState)
+        return this.getCollectionSnapshot('products', setArrayState);
     },
-    getOrdersSnapshot (setArrayState) {
-        return this.getCollectionSnapshot('orders', setArrayState)
+    updateProductDoc(docID, prop) {
+        const collectionProducts = this.getCollectionRef('products');
+        return collectionProducts.doc(docID).update(prop);
     },
-    getShopsSnapshot (setArrayState) {
-        return this.getCollectionSnapshot('shops', setArrayState)
+    getOrdersSnapshot(setArrayState) {
+        return this.getCollectionSnapshot('orders', setArrayState);
+    },
+    updateOrderDoc(docID, prop) {
+        const collectionOrders = this.getCollectionRef('orders');
+        return collectionOrders.doc(docID).update(prop);
+    },
+    getShopsSnapshot(setArrayState) {
+        return this.getCollectionSnapshot('shops', setArrayState);
+    },
+    updateShopDoc(docID, prop) {
+        const collectionShops = this.getCollectionRef('shops');
+        return collectionShops.doc(docID).update(prop);
+    },
+    // getUserSnapshot(setArrayState) {
+    //     return this.getCollectionSnapshot('shops', setArrayState);
+    // },
+    updateUserDoc(docID, prop) {
+        const collectionShops = this.getCollectionRef('users');
+        return collectionShops.doc(docID).update(prop);
     },
 }
 
-// class FireBaseServices {
-//     constructor(userID) {
-//         this.userID = userID;
-//     }
-//     getCollection = (collectionID) => {
-//         const collection = firebase.firestore().collection(collectionID)
-//         return collection.where('userID', '==', this.userID)
-//     }
-//     getProductsCollection = () => (
-//         getCollection('products')
-//     )
-//     getOrdersCollection = () => (
-//         getCollection('orders')
-//     )
-//     getShopsCollection = () => (
-//         getCollection('shops')
-//     )
-// }
 
 export {
-    firebaseApp, getCollection, collectionSnapshot, updateDoc,
-    removeItem, getOwnCollection, fireBaseServices
+    firebaseApp, getCollection, 
+    arrayRemove, fireBaseServices
 };

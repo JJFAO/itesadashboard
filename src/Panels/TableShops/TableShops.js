@@ -3,10 +3,9 @@ import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
-import { getCollection, updateDoc, removeItem } from "../../utils/firebase";
+import { getCollection, arrayRemove, fireBaseServices } from "../../utils/firebase";
 
 const shopsCollection = getCollection('shops');
-const productsCollection = getCollection('products');
 
 
 /* --TableShops Component-- */
@@ -21,11 +20,11 @@ const TableShops = ({ userID, shops, setShops, products }) => {
         setEdit({ ...edit, [name]: value })
     }
 
-    const editProps = (id, prop) => {
-        if (id === '0') {
+    const editProps = (shopID, prop) => {
+        if (shopID === '0') {
             setEdit({ ...edit, ...prop });
         } else {
-            updateDoc(shopsCollection, id, prop);
+            fireBaseServices.updateShopDoc(shopID, prop);
         }
     }
 
@@ -42,7 +41,7 @@ const TableShops = ({ userID, shops, setShops, products }) => {
         if (editable === '0') {
             await shopsCollection.add(edit);
         } else {
-            await updateDoc(shopsCollection, id, edit);
+            await fireBaseServices.updateShopDoc(id, edit);
         }
         setEditable('');
         setEdit({});
@@ -51,7 +50,7 @@ const TableShops = ({ userID, shops, setShops, products }) => {
     const removeShopInProducts = (id) => {
         products.forEach(({ shops, key }) => {
             if (shops.includes(id)) {
-                updateDoc(productsCollection, key, { shops: removeItem(id) })
+                fireBaseServices.updateShopDoc(key, { shops: arrayRemove(id) });
             }
         })
     }

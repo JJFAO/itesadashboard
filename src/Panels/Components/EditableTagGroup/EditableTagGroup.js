@@ -1,32 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Select } from 'antd';
 import styles from './editableTagGroup.module.scss'
-import { getCollection, updateDoc, collectionSnapshot } from "../../../utils/firebase";
-
-const shopsCollection = getCollection('shops');
-const productsCollection = getCollection('products');
+import { fireBaseServices } from "../../../utils/firebase";
 
 
-const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
-    const [options, setOptions] = useState([])
 
-    useEffect(() => (
-        collectionSnapshot(userID, shopsCollection, setOptions)
-    ), [userID]);
+const EditableTagGroup = ({ prodID, shopsIds, shops }) => {
 
-
-    const handleChange = (shops) => {
-        updateDoc(productsCollection, prodID, { shops })
+    const handleChange = (selectedShops) => {
+        fireBaseServices.updateProductDoc(prodID, { selectedShops })
     }
 
-    const optionsMap = options.map((shop) => (
+    const optionsMap = shops.map((shop) => (
         { label: shop.name, value: shop.key }
     ));
     
 
     return (
         <div className={styles.EditableTagGroup} >
-            {options.length !== 0 &&
             <Select
                 defaultValue={shopsIds}
                 id="select"
@@ -36,7 +27,7 @@ const EditableTagGroup = ({ userID, prodID, shopsIds }) => {
                 showArrow
                 options={optionsMap}
             >
-            </Select>}
+            </Select>
         </div>
     );
 }

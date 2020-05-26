@@ -90,6 +90,7 @@ export function TheApp({ user }) {
                                     userID={userID}
                                     products={products}
                                     setProducts={setProducts}
+                                    shops={shops}
                                 />
                             ) ||
                             ((itemOpen === 'Mi cuenta') &&

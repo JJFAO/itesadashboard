@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Button, Input } from 'antd';
-import {getCollection, updateDoc} from "../../utils/firebase";
+import {getCollection, fireBaseServices} from "../../utils/firebase";
 import styles from './tableproducts.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
@@ -9,7 +9,7 @@ const productsCollection = getCollection('products');
 
 
 /* --TableProducts Component-- */
-const TableProducts = ({ userID, products, setProducts }) => {
+const TableProducts = ({ userID, products, setProducts, shops }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
 
@@ -31,7 +31,7 @@ const TableProducts = ({ userID, products, setProducts }) => {
         if (editable === '0') {
             await productsCollection.add(edit);
         } else {
-            await updateDoc(productsCollection, id, edit);
+            await fireBaseServices.updateProductDoc(id, edit);
         }
         setEditable('');
         setEdit({});
@@ -127,9 +127,9 @@ const TableProducts = ({ userID, products, setProducts }) => {
                     expandable={{
                         expandedRowRender: record => (
                             <EditableTagGroup
-                                shopsIds={record.shops}
-                                userID={userID}
                                 prodID={record.key}
+                                shopsIds={record.shops}
+                                shops={shops}
                             />
                         ),
                         rowExpandable: record => (record.key !== '0'),

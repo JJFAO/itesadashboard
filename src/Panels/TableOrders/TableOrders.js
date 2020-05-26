@@ -1,10 +1,8 @@
 import React from 'react';
 import { Table, Tag } from 'antd';
-import { getCollection, updateDoc } from "../../utils/firebase";
 import styles from './tableorders.module.scss';
 import DropDownStates from '../Components/DropDownTypes/DropDownStates';
-
-const ordersCollection = getCollection('orders');
+import { fireBaseServices } from '../../utils/firebase';
 
 
 /* --TableOrders Component-- */
@@ -17,8 +15,8 @@ const TableOrders = ({ userID, orders, setOrders, shops }) => {
         editProps(id, { state });
     }
 
-    const editProps = (id, prop) => {
-        updateDoc(ordersCollection, id, prop);
+    const editProps = (docID, prop) => {
+        fireBaseServices.updateOrderDoc(docID, prop);
     }
 
     const handleTableChange = (pagination, filters, sorter) => {
