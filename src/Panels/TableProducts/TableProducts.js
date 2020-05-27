@@ -9,7 +9,7 @@ const productsCollection = fireBaseServices.getCollectionRef('products');
 
 
 /* --TableProducts Component-- */
-const TableProducts = ({ userID, products, setProducts, shops }) => {
+const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
 
@@ -121,7 +121,7 @@ const TableProducts = ({ userID, products, setProducts, shops }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !products.length, delay: 200 }}
+                <Table loading={{ spinning: loading, delay: 200 }}
                     dataSource={products}
                     columns={columns}
                     expandable={{

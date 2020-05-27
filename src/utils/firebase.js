@@ -25,7 +25,7 @@ const fireBaseServices = {
     getCollectionRef(collectionID) {
         return firebase.firestore().collection(collectionID);
     },
-    getCollectionSnapshot(collectionID, setArrayState) {
+    getCollectionSnapshot(collectionID, setArrayState, setLoading) {
         if (this.userID) {
             const collection = this.getCollectionRef(collectionID);
 
@@ -38,6 +38,7 @@ const fireBaseServices = {
                         array.push(element)
                     })
                     setArrayState(array);
+                    setLoading((prev) =>({ ...prev, [collectionID]: false }))
                     // .onSnapshot(function (snapshot) {
                     //     let array = [];
                     // snapshot.docChanges().forEach(change => {

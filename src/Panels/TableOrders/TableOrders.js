@@ -7,7 +7,7 @@ import { fireBaseServices } from '../../utils/firebase';
 
 /* --TableOrders Component-- */
 
-const TableOrders = ({ orders, shops }) => {
+const TableOrders = ({ orders, shops, loading }) => {
     
 
     const handleState = (id) => (e) => {
@@ -133,7 +133,7 @@ const TableOrders = ({ orders, shops }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: !orders.length, delay: 200 }}
+                <Table loading={{ spinning: loading, delay: 200 }}
                     dataSource={orders}
                     columns={columns}
                     expandable={{

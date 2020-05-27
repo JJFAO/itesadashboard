@@ -17,16 +17,16 @@ const { Content } = Layout;
 
 export function TheApp({ user }) {
     const { userID } = user;
-    const [itemOpen, setItemOpen] = useState('pedidos');
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [itemOpen, setItemOpen] = useState('pedidos')
+    const [mobileOpen, setMobileOpen] = useState(false)
     const [products, setProducts] = useState([])
     const [orders, setOrders] = useState([])
     const [shops, setShops] = useState([])
-
+    const [loading, setLoading] = useState({orders: true, shops: true, products: true})
     useEffect(() => {
-        const unSubOrders = fireBaseServices.getOrdersSnapshot(setOrders)
-        const unSubShops = fireBaseServices.getShopsSnapshot(setShops)
-        const unSubProducts = fireBaseServices.getProductsSnapshot(setProducts)
+        const unSubOrders = fireBaseServices.getOrdersSnapshot(setOrders, setLoading)
+        const unSubShops = fireBaseServices.getShopsSnapshot(setShops, setLoading)
+        const unSubProducts = fireBaseServices.getProductsSnapshot(setProducts, setLoading)
         return () => {
             unSubOrders && unSubOrders();
             unSubProducts && unSubProducts();
@@ -71,12 +71,14 @@ export function TheApp({ user }) {
                         {
                             ((itemOpen === 'pedidos') &&
                                 <TableOrders
+                                    loading={loading.orders}
                                     orders={orders}
                                     shops={shops}
                                 />
                             ) ||
                             ((itemOpen === 'tiendas') &&
                                 <TableShops
+                                    loading={loading.shops}
                                     userID={userID}
                                     shops={shops}
                                     setShops={setShops}
@@ -85,6 +87,7 @@ export function TheApp({ user }) {
                             ) ||
                             ((itemOpen === 'Productos') &&
                                 <TableProducts
+                                    loading={loading.products}
                                     userID={userID}
                                     products={products}
                                     setProducts={setProducts}
