@@ -8,7 +8,6 @@ import { fireBaseServices } from '../../utils/firebase';
 /* --TableOrders Component-- */
 
 const TableOrders = ({ orders, shops, loading }) => {
-    
 
     const handleState = (id) => (e) => {
         const state = Number(e.key);
