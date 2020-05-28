@@ -57,20 +57,20 @@ const fireBaseServices = {
         const collectionProducts = this.getCollectionRef(collectionID);
         return collectionProducts.doc(docID).update(prop);
     },
-    getProductsSnapshot(setArrayState) {
-        return this.getCollectionSnapshot('products', setArrayState);
+    getProductsSnapshot(setArrayState, setLoading) {
+        return this.getCollectionSnapshot('products', setArrayState, setLoading);
     },
     updateProductDoc(docID, prop) {
         return this.updateDoc('products', docID, prop);
     },
-    getOrdersSnapshot(setArrayState) {
-        return this.getCollectionSnapshot('orders', setArrayState);
+    getOrdersSnapshot(setArrayState, setLoading) {
+        return this.getCollectionSnapshot('orders', setArrayState, setLoading);
     },
     updateOrderDoc(docID, prop) {
         return this.updateDoc('orders', docID, prop);
     },
-    getShopsSnapshot(setArrayState) {
-        return this.getCollectionSnapshot('shops', setArrayState);
+    getShopsSnapshot(setArrayState, setLoading) {
+        return this.getCollectionSnapshot('shops', setArrayState, setLoading);
     },
     updateShopDoc(docID, prop) {
         return this.updateDoc('shops', docID, prop);

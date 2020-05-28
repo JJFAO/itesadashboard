@@ -121,7 +121,7 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
-                <Table loading={{ spinning: loading, delay: 200 }}
+                <Table loading={{ spinning: loading, delay: 150 }}
                     dataSource={products}
                     columns={columns}
                     expandable={{
