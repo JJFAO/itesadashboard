@@ -3,7 +3,7 @@ import { Table, Switch, Button, Input } from 'antd';
 import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
-import { arrayRemove, fireBaseServices } from "../../utils/firebase";
+import { fireBaseServices, arrayUnion, arrayRemove } from "../../utils/firebase";
 
 const shopsCollection = fireBaseServices.getCollectionRef('shops');
 
@@ -39,7 +39,12 @@ const TableShops = ({ userID, shops, setShops, products, loading }) => {
 
     const handleUpdate = (id) => async () => {
         if (editable === '0') {
-            await shopsCollection.add(edit);
+            const newShop = await shopsCollection.add(edit);
+            products.forEach(({ shops, key }) => {
+                if (!shops.includes(newShop.id)) {
+                    fireBaseServices.updateProductDoc(key, { shops: arrayUnion(newShop.id) });
+                }
+            })
         } else {
             await fireBaseServices.updateShopDoc(id, edit);
         }
@@ -50,7 +55,7 @@ const TableShops = ({ userID, shops, setShops, products, loading }) => {
     const removeShopInProducts = (id) => {
         products.forEach(({ shops, key }) => {
             if (shops.includes(id)) {
-                fireBaseServices.updateShopDoc(key, { shops: arrayRemove(id) });
+                fireBaseServices.updateProductDoc(key, { shops: arrayRemove(id) });
             }
         })
     }
@@ -64,7 +69,7 @@ const TableShops = ({ userID, shops, setShops, products, loading }) => {
         setEdit({
             name: '',
             type: 1,
-            enabled: false,
+            enabled: true,
             userID
         })
         setShops([...shops, { key: '0' }])

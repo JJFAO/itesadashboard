@@ -61,10 +61,11 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
     }
 
     const handleNew = () => {
+        const allShopsIDs = shops.map(({ key }) => key)
         setEdit({
             name: '',
             price: '',
-            shops: [],
+            shops: allShopsIDs,
             userID
         })
         setProducts([...products, { key: '0', shops: [] }])

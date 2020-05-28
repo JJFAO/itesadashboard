@@ -18,6 +18,8 @@ const firebaseApp = firebase;
 
 const arrayRemove = (value) => (firebase.firestore.FieldValue.arrayRemove(value));
 
+const arrayUnion = (value) => (firebase.firestore.FieldValue.arrayUnion(value));
+
 const fireBaseServices = {
     setUser(userID) {
         this.userID = userID;
@@ -84,4 +86,4 @@ const fireBaseServices = {
 }
 
 
-export { firebaseApp, arrayRemove, fireBaseServices };
+export { firebaseApp, fireBaseServices, arrayUnion, arrayRemove };
