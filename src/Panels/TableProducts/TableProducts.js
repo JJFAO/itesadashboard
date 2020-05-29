@@ -27,7 +27,8 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
     }
 
     const handleUpdate = (id) => async () => {
-        edit.price = parseInt(edit.price)
+        if (edit.price) { edit.price = parseInt(edit.price) }
+
         if (editable === '0') {
             await productsCollection.add(edit);
         } else {
@@ -56,7 +57,6 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
 
     const handleEditable = (obj) => {
         removeUnsavedRow();
-        setEdit(obj);
         setEditable(obj.key);
     }
 
@@ -96,7 +96,7 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
             key: 'price',
             render: (price, { key }) => (
                 (editable === key) ? (
-                    <Input name="price" type="number"
+                    <Input name="price" type="number" defaultValue={price}
                         onChange={handleChange} className={styles.wPrice}
                         maxLength="12" autoComplete="off"
                         value={edit.price}
