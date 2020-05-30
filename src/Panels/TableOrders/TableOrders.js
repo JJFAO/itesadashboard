@@ -10,7 +10,8 @@ import dateFormat from 'dateformat'
 const TableOrders = ({ orders, shops, loading }) => {
     const ordersMap = orders.sort((a, b) => (a.date - b.date))
         .map((o, i) => {
-            if (o.state == null) { o.state = 0; o.num = i }
+            o.num = i
+            if (o.state == null) { o.state = 0; }
             return o;
         })
 
