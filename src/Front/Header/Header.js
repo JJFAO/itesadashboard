@@ -34,7 +34,7 @@ export default function Header({ classes }) {
                     Solo con un click...
                 </Typography>
                 <Typography  className={classes.hoylabel}>
-                    Hoy te convetís en e-commerce <span role="img" aria-label="cara alegre">😊</span>
+                    Hoy te convertís en e-commerce <span role="img" aria-label="cara alegre">😊</span>
                 </Typography>
                 <Button
                     type="submit"

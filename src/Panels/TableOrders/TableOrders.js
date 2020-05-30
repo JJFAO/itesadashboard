@@ -3,11 +3,15 @@ import { Table, Tag } from 'antd';
 import styles from './tableorders.module.scss';
 import DropDownStates from '../Components/DropDownTypes/DropDownStates';
 import { fireBaseServices } from '../../utils/firebase';
-
+import dateFormat from 'dateformat'
 
 /* --TableOrders Component-- */
 
 const TableOrders = ({ orders, shops, loading }) => {
+    const ordersMap = orders.map((o) => {
+        if (o.state == null) { o.state = 0; }
+        return o;
+    })
 
     const handleState = (id) => (e) => {
         const state = Number(e.key);
@@ -26,11 +30,11 @@ const TableOrders = ({ orders, shops, loading }) => {
         //   ...filters,
         // });
         console.log(pagination, filters, sorter);
-        
-      };
 
+    };
+    
 
-    const shopsMap = shops.map( ({key, name}) => ({value: key, text:name}) )
+    const shopsMap = shops.map(({ key, name }) => ({ value: key, text: name }))
 
     const columns = [
         {
@@ -39,24 +43,26 @@ const TableOrders = ({ orders, shops, loading }) => {
             key: 'orderNum',
             sorter: (a, b) => a.orderNum - b.orderNum,
             defaultSortOrder: 'descend',
-            render: (orderNum) => (
-                <span> {orderNum} </span>
+            render: (num, r, index) => (
+                <span> 00{index + 1} </span>
             )
         }, {
             title: 'Cliente',
-            dataIndex: 'clientName',
-            key: 'clientName',
-            render: (clientName) => (
-                <span> {clientName} </span>
+            dataIndex: 'name',
+            key: 'name',
+            render: (name) => (
+                <span style={{ textTransform: 'capitalize' }}>
+                    {name}
+                </span>
             )
         }, {
             title: 'Modalidad',
-            dataIndex: 'type',
-            key: 'type',
-            render: (type) => (
+            dataIndex: 'send',
+            key: 'send',
+            render: (send) => (
                 <span>
-                    {type === 0 && 'Envío'}
-                    {type === 1 && 'Takeaway'}
+                    {send === '0' && 'Envío'}
+                    {send === '1' && 'Takeaway'}
                 </span>
             )
         },
@@ -73,25 +79,18 @@ const TableOrders = ({ orders, shops, loading }) => {
             dataIndex: 'shop',
             key: 'shop',
             filters: shopsMap,
-            onFilter: (value, record) => record.shop === value,
-            render: (shopID) => {
-                const shopOrder = shops.find(shop => shop.key === shopID)
-                return <span> {shopOrder && shopOrder.name} </span>
-            }
+            onFilter: (value, record) => record.shop.key === value,
+            render: (shop) => <span> {shop.name} </span>
         }, {
             title: 'Dirección',
             dataIndex: 'address',
             key: 'address',
-            render: (address) => (
-                <span> {address} </span>
-            )
+            render: (address) => (<span> {address} </span>)
         }, {
             title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            render: (email) => (
-                <span> {email} </span>
-            )
+            dataIndex: 'mail',
+            key: 'mail',
+            render: (mail) => (<span> {mail} </span>)
         }, {
             title: 'Teléfono',
             dataIndex: 'phone',
@@ -103,9 +102,15 @@ const TableOrders = ({ orders, shops, loading }) => {
             title: 'Fecha',
             dataIndex: 'date',
             key: 'date',
-            render: (date) => (
-                <span> {date} </span>
-            )
+            render: (date) => {
+                if (date) {
+                    const theDate = new Date(date);
+                    const dateParsed = dateFormat(theDate, "mm/dd HH:MM'hs'")
+                    return (
+                        <span> {dateParsed} </span>
+                    )
+                }
+            }
         }, {
             title: 'Estado',
             dataIndex: 'state',
@@ -126,14 +131,14 @@ const TableOrders = ({ orders, shops, loading }) => {
 
 
     const prodsMap = (prods) => (prods.map(prod => (
-        <Tag key={prod.name}>{`${prod.name}  x ${prod.quantity}`}</Tag>
+        <Tag key={prod.name}>{`${prod.name}  x${prod.quantity}`}</Tag>
     )));
 
     return (
         <div className={styles.tableContent}>
             <div className={styles.scrollTable}>
                 <Table loading={{ spinning: loading, delay: 150 }}
-                    dataSource={orders}
+                    dataSource={ordersMap}
                     columns={columns}
                     expandable={{
                         expandedRowRender: record => (
