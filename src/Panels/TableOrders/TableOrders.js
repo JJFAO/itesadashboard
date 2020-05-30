@@ -8,10 +8,11 @@ import dateFormat from 'dateformat'
 /* --TableOrders Component-- */
 
 const TableOrders = ({ orders, shops, loading }) => {
-    const ordersMap = orders.map((o) => {
-        if (o.state == null) { o.state = 0; }
-        return o;
-    })
+    const ordersMap = orders.sort((a, b) => (a.date - b.date))
+        .map((o, i) => {
+            if (o.state == null) { o.state = 0; o.num = i }
+            return o;
+        })
 
     const handleState = (id) => (e) => {
         const state = Number(e.key);
@@ -32,19 +33,24 @@ const TableOrders = ({ orders, shops, loading }) => {
         console.log(pagination, filters, sorter);
 
     };
-    
+
 
     const shopsMap = shops.map(({ key, name }) => ({ value: key, text: name }))
 
     const columns = [
         {
             title: 'Nº de pedido',
-            dataIndex: 'orderNum',
-            key: 'orderNum',
-            sorter: (a, b) => a.orderNum - b.orderNum,
+            dataIndex: 'num',
+            key: 'num',
+            sorter: (a, b) => (
+                a.date ?
+                    b.date ?
+                        a.date - b.date
+                : 1 : -1
+            ),
             defaultSortOrder: 'descend',
             render: (num, r, index) => (
-                <span> 00{index + 1} </span>
+                <span> 00{num + 1} </span>
             )
         }, {
             title: 'Cliente',
