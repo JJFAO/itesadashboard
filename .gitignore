@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 
+/build
+
 # Firebase cache
 .firebase/
 
@@ -64,3 +66,4 @@ node_modules/
 # dotenv environment variables file
 .env
 .vscode/settings.json
+/build/
