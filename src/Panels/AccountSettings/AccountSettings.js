@@ -4,6 +4,7 @@ import styles from './accountsettings.module.scss'
 import { fireBaseServices } from '../../utils/firebase';
 import { useState } from 'react';
 import { ChromePicker } from 'react-color';
+import ImageUpload from './ImageUpload';
 
 const userCollection = fireBaseServices.getCollectionRef('users');
 
@@ -40,6 +41,7 @@ const AccountSettings = ({ userID }) => {
 
     return (
         <div className={styles.AccountSettings}>
+
             <div className={styles.userUrl}>
                 <p>
                     Link a tu negocio:{' '}
@@ -48,6 +50,7 @@ const AccountSettings = ({ userID }) => {
                     </a>
                 </p>
             </div>
+
             <div>
                 <Button className={styles.btnWhats}
                     href={`https://api.whatsapp.com/send?text=${urlEncoded}`}
@@ -55,7 +58,13 @@ const AccountSettings = ({ userID }) => {
                     Compartir en WhatsApp
                 </Button>
             </div>
-            <div>
+
+            <div style={{ marginTop: "2rem" }}>
+                <p>Imagen para la aplicación:</p>
+                <ImageUpload />
+            </div>
+
+            <div style={{ marginTop: "2rem" }}>
                 <p>Color de Tema:</p>
                 <Spin spinning={spin} delay="150">
                     <ChromePicker
@@ -65,11 +74,13 @@ const AccountSettings = ({ userID }) => {
                     />
                 </Spin>
             </div>
+
             <div>
                 <Button onClick={handleSave} type="primary" className={styles.btnSave} >
                     Guardar Cambios
                 </Button>
             </div>
+
         </div>
     );
 };
