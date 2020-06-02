@@ -60,7 +60,7 @@ const fireBaseServices = {
         const collection = this.getCollectionRef('users');
         return collection.doc(this.userID).onSnapshot(doc => {
             const element = doc.data();
-            element.key = doc.id;
+            element.userID = doc.id;
             setState(element);
             setLoading((prev) => ({ ...prev, user: false }))
         })
