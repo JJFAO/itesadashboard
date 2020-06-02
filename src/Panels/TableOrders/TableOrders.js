@@ -98,7 +98,14 @@ const TableOrders = ({ orders, shops, loading }) => {
             dataIndex: 'mail',
             key: 'mail',
             render: (mail) => (<span> {mail} </span>)
-        }, {
+        },
+        {
+            title: 'Comentarios',
+            dataIndex: 'comments',
+            key: 'comments',
+            render: (comments) => (<span> {comments} </span>)
+        },
+        {
             title: 'Teléfono',
             dataIndex: 'phone',
             key: 'phone',
