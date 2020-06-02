@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import 'firebase/firestore';
+import 'firebase/storage';
 
 
 const config = {
@@ -40,7 +41,7 @@ const fireBaseServices = {
                         array.push(element)
                     })
                     setArrayState(array);
-                    setLoading((prev) =>({ ...prev, [collectionID]: false }))
+                    setLoading((prev) => ({ ...prev, [collectionID]: false }))
                     // .onSnapshot(function (snapshot) {
                     //     let array = [];
                     // snapshot.docChanges().forEach(change => {
@@ -54,6 +55,18 @@ const fireBaseServices = {
                     // setArrayState((prev) => [ ...prev, ...array]); //mover aqui funcion para modificar el state condicionalmente
                 })
         }
+    },
+    getUserSnapshot(setState, setLoading) {
+        const collection = this.getCollectionRef('users');
+        return collection.doc(this.userID).onSnapshot(doc => {
+            const element = doc.data();
+            element.key = doc.id;
+            setState(element);
+            setLoading((prev) => ({ ...prev, user: false }))
+        })
+    },
+    updateUserDoc(prop) {
+        return this.updateDoc('users', this.userID, prop);
     },
     updateDoc(collectionID, docID, prop) {
         const collectionProducts = this.getCollectionRef(collectionID);
@@ -77,11 +90,8 @@ const fireBaseServices = {
     updateShopDoc(docID, prop) {
         return this.updateDoc('shops', docID, prop);
     },
-    // getUserSnapshot(setArrayState) {
-    //     return this.getCollectionSnapshot('shops', setArrayState);
-    // },
-    updateUserDoc(docID, prop) {
-        return this.updateDoc('users', docID, prop);
+    getImageStorageRef() {
+        return firebase.storage().ref().child(`usersImages/${this.userID}/background`);
     },
 }
 

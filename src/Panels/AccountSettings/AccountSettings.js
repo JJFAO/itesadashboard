@@ -6,23 +6,10 @@ import { useState } from 'react';
 import { ChromePicker } from 'react-color';
 import ImageUpload from './ImageUpload';
 
-const userCollection = fireBaseServices.getCollectionRef('users');
 
 
-const AccountSettings = ({ userID }) => {
-    const [user, setUser] = useState({ color: '' })
-    const [spin, setSpin] = useState(true)
-
-    useEffect(() => {
-        if (userID) {
-            userCollection.doc(userID).onSnapshot((doc) => {
-                const { color } = doc.data();
-                setUser({ color });
-                setSpin(false);
-            })
-        }
-    }, [userID]);
-
+const AccountSettings = ({ user, setUser, loading }) => {
+    const { userID } = user;
 
     const handleChange = (e) => {
         setUser({ color: e.hex });
@@ -30,7 +17,7 @@ const AccountSettings = ({ userID }) => {
 
     const handleSave = () => {
         const { color } = user;
-        fireBaseServices.updateUserDoc(userID, { color })
+        fireBaseServices.updateUserDoc({ color })
     }
 
 
@@ -54,6 +41,7 @@ const AccountSettings = ({ userID }) => {
             <div>
                 <Button className={styles.btnWhats}
                     href={`https://api.whatsapp.com/send?text=${urlEncoded}`}
+                    target="_blank" rel="noopener noreferrer"
                 >
                     Compartir en WhatsApp
                 </Button>
@@ -61,12 +49,12 @@ const AccountSettings = ({ userID }) => {
 
             <div style={{ marginTop: "2rem" }}>
                 <p>Imagen para la aplicación:</p>
-                <ImageUpload />
+                <ImageUpload imageUrl={user.imageUrl} loading={loading} />
             </div>
 
             <div style={{ marginTop: "2rem" }}>
                 <p>Color de Tema:</p>
-                <Spin spinning={spin} delay="150">
+                <Spin spinning={loading} delay="150" style={{width: '200px'}}>
                     <ChromePicker
                         width="198px"
                         onChangeComplete={handleChange}

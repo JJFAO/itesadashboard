@@ -15,22 +15,26 @@ import { fireBaseServices } from '../utils/firebase';
 const { Content } = Layout;
 
 
-export function TheApp({ user }) {
-    const { userID } = user;
+export function TheApp({ userID }) {
+    // const { userID } = user;
     const [itemOpen, setItemOpen] = useState('pedidos')
     const [mobileOpen, setMobileOpen] = useState(false)
     const [products, setProducts] = useState([])
     const [orders, setOrders] = useState([])
     const [shops, setShops] = useState([])
-    const [loading, setLoading] = useState({orders: true, shops: true, products: true})
+    const [user, setUser] = useState({ color: '', imageUrl: '' })
+    const [loading, setLoading] = useState({orders: true, shops: true, products: true, user: true})
     useEffect(() => {
         const unSubOrders = fireBaseServices.getOrdersSnapshot(setOrders, setLoading)
         const unSubShops = fireBaseServices.getShopsSnapshot(setShops, setLoading)
         const unSubProducts = fireBaseServices.getProductsSnapshot(setProducts, setLoading)
+        const unSubUser = fireBaseServices.getUserSnapshot(setUser, setLoading)
+        
         return () => {
             unSubOrders && unSubOrders();
             unSubProducts && unSubProducts();
             unSubShops && unSubShops();
+            unSubUser && unSubUser();
         }
     }, [userID])
 
@@ -95,7 +99,7 @@ export function TheApp({ user }) {
                                 />
                             ) ||
                             ((itemOpen === 'Mi cuenta') &&
-                                <AccountSettings userID={userID} />
+                                <AccountSettings user={user} setUser={setUser} loading={loading.user} />
                             )
                         }
                     </div>

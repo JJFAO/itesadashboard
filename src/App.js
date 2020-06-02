@@ -28,7 +28,7 @@ function App() {
                 let db = firebaseApp.firestore();
 
                 db.collection('users').where('uid', '==', uid)
-                    .onSnapshot(function (docs) {
+                    .get().then(function (docs) {
                         docs.forEach(function (doc) {
                             fireBaseServices.setUser(doc.id)
                             let theUser = doc.data();
@@ -70,7 +70,7 @@ function App() {
                         <Route exact path="/starting">
                            <Starter/>
                         </Route>
-                        <PrivateRoute exact path="/dashboard" user={user} component={TheApp} />
+                        <PrivateRoute exact path="/dashboard" userID={user.userID} component={TheApp} />
                         <Route exact path="/">
                             <Home classes={classes} />
                         </Route>
