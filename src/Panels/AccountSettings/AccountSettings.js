@@ -9,7 +9,7 @@ import ImageUpload from './ImageUpload';
 
 
 const AccountSettings = ({ user, setUser, loading }) => {
-    const { userID } = user;
+    const { userID, bgImageMobile, bgImageDesktop } = user;
 
     const handleChange = (e) => {
         setUser({ color: e.hex });
@@ -48,8 +48,8 @@ const AccountSettings = ({ user, setUser, loading }) => {
             </div>
 
             <div style={{ marginTop: "2rem" }}>
-                <p>Imagen para la aplicación:</p>
-                <ImageUpload imageUrl={user.imageUrl} loading={loading} />
+                <h3>Imagenés para la aplicación:</h3>
+                <ImageUpload images={{ bgImageMobile, bgImageDesktop }} loading={loading} />
             </div>
 
             <div style={{ marginTop: "2rem" }}>

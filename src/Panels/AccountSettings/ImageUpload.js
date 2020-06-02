@@ -4,71 +4,67 @@ import { LoadingOutlined, UploadOutlined, FileImageOutlined } from '@ant-design/
 import { fireBaseServices } from "../../utils/firebase";
 import styles from './accountsettings.module.scss'
 import { beforeUpload, getBase64 } from "../../utils/uploadFiles";
+import UploadFile from "../Components/UploadFile/UploadFile";
 
-
+const img1 = 'bgImageMobile'
+const img2 = 'bgImageDesktop'
 export default class ImageUpload extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            loading: true,
-            imageUrl: '',
+            [img1]: {
+                name: 'bgImageMobile',
+                image: '',
+                loading: true,
+            },
+            [img2]: {
+                name: 'bgImageDesktop',
+                image: '',
+                loading: true,
+            },
         };
     }
 
     async componentDidMount() {
-        const { imageUrl, loading } = this.props;
-
-        this.setState({ imageUrl });
-        this.setState({ loading });
+        const { images, loading } = this.props;
+        const { bgImageMobile, bgImageDesktop } = images;
+        this.setState({
+            [img1]: { ...this.state[img1], image: bgImageMobile, loading },
+            [img2]: { ...this.state[img2], image: bgImageDesktop, loading }
+        });
     }
 
     handleUpload = async (e) => {
+        const { file, filename } = e;
         // const imgExt = e.file.type === 'image/jpeg' ? '.jpg' : '.png';
-        this.setState({ loading: true });
-        const imageRef = fireBaseServices.getImageStorageRef();
-        const uploadTask = await imageRef.put(e.file);
+        this.setState({ [filename]: { ...this.state[filename], loading: true } });
+        const imageRef = fireBaseServices.getImageStorageRef().child(filename);
+        const uploadTask = await imageRef.put(file);
         const imageUrl = await uploadTask.ref.getDownloadURL();
-        const image = await getBase64(e.file, message);
+        const image = await getBase64(file, message);
 
-        await fireBaseServices.updateUserDoc({ imageUrl });
-        this.setState({ imageUrl: image });
+        await fireBaseServices.updateUserDoc({ [filename]: imageUrl });
+        this.setState({ [filename]: { ...this.state[filename], image } });
 
         setTimeout(() => {
-            this.setState({ loading: false });
+            this.setState({ [filename]: { ...this.state[filename], loading: false } });
         }, 300);
     }
 
 
     render() {
-        const { imageUrl, loading } = this.state;
+        const handleUpload = this.handleUpload;
+        const props = { beforeUpload, handleUpload };
 
         return (
-            <Upload
-                accept="image/jpeg, image/png"
-                name="background"
-                listType="picture-card"
-                className={styles.AccountSettings + 'avatar-uploader'}
-                showUploadList={false}
-                customRequest={this.handleUpload}
-                beforeUpload={(file) => beforeUpload(file, message)}
-                onChange={this.handleChange}
-            >
-                <Spin spinning={loading}>
-                    <div className={styles.userImgContainer}>
-                        {imageUrl ?
-                            <img src={imageUrl} alt="Imagen cargada" className={styles.userImg} />
-                            :
-                            <FileImageOutlined className={styles.placeholder} />
-                        }
-                    </div>
-                </Spin>
-                <Button style={{ width: "11rem" }}>
-                    {loading ? <LoadingOutlined /> : <UploadOutlined />}
-                    Cargar Imagen
-                </Button>
-            </Upload>
+            <>
+                <p style={{marginTop: '1.5rem'}}>Para pantallas de celular:</p>
+                <UploadFile {...props} {...this.state[img1]} />
+                <p style={{marginTop: '1rem'}}>Para pantallas de PC:</p>
+                <UploadFile {...props} {...this.state[img2]} />
+            </>
         );
     }
 }

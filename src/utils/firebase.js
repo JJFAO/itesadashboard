@@ -91,7 +91,7 @@ const fireBaseServices = {
         return this.updateDoc('shops', docID, prop);
     },
     getImageStorageRef() {
-        return firebase.storage().ref().child(`usersImages/${this.userID}/background`);
+        return firebase.storage().ref().child(`usersImages/${this.userID}`);
     },
 }
 
