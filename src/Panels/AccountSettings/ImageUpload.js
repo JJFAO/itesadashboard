@@ -28,8 +28,8 @@ export default class ImageUpload extends React.Component {
         // const imgExt = e.file.type === 'image/jpeg' ? '.jpg' : '.png';
         this.setState({ loading: true });
         const imageRef = fireBaseServices.getImageStorageRef();
-        const uploadTask = imageRef.put(e.file);
-        const imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+        const uploadTask = await imageRef.put(e.file);
+        const imageUrl = await uploadTask.ref.getDownloadURL();
         const image = await getBase64(e.file, message);
         await fireBaseServices.updateUserDoc({ imageUrl })
         this.setState({ imageUrl: image });
