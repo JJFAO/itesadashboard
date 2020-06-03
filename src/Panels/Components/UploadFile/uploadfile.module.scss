@@ -4,12 +4,13 @@
         margin: auto;
     }
     .userImgContainer {
-        min-height: 10rem;
+        min-height: 7rem;
+        max-height: 20rem;
         display: flex;
+        background: #ffff;
     }
     .placeholder {
         margin: auto;
-        font-size: 3.5rem;
         padding: 1.5rem;
         color: #9146f7c2;
     }

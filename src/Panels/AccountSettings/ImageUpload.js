@@ -1,6 +1,6 @@
 import React from "react";
 import { Upload, message, Button, Spin } from 'antd';
-import { LoadingOutlined, UploadOutlined, FileImageOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UploadOutlined, FileImageOutlined, MobileOutlined, DesktopOutlined } from '@ant-design/icons';
 import { fireBaseServices } from "../../utils/firebase";
 import styles from './accountsettings.module.scss'
 import { beforeUpload, getBase64 } from "../../utils/uploadFiles";
@@ -60,10 +60,22 @@ export default class ImageUpload extends React.Component {
 
         return (
             <>
-                <p style={{marginTop: '1.5rem'}}>Para pantallas de celular:</p>
-                <UploadFile {...props} {...this.state[img1]} />
-                <p style={{marginTop: '1rem'}}>Para pantallas de PC:</p>
-                <UploadFile {...props} {...this.state[img2]} />
+                <p style={{marginTop: '1rem'}}>
+                    Para pantallas de PC:
+                </p>
+                <UploadFile {...props}
+                    {...this.state[img2]}
+                    style={{maxHeight: '7rem', fontSize: '4rem'}}
+                    icon={DesktopOutlined}
+                />
+                <p style={{marginTop: '1.5rem'}}>
+                    Para pantallas de celular:
+                </p>
+                <UploadFile {...props}
+                    {...this.state[img1]}
+                    style={{minHeight: '19rem', fontSize: '4.7rem'}}
+                    icon={MobileOutlined}
+                />
             </>
         );
     }

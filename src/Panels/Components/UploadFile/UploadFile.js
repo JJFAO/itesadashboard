@@ -1,10 +1,10 @@
 import React from 'react'
 import { Upload, Spin, Button, message } from 'antd';
-import { FileImageOutlined, LoadingOutlined, UploadOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import styles from './uploadfile.module.scss'
 
 export default function UploadFile(props) {
-    const { name, image, beforeUpload, handleUpload, loading, handleChange } = props;
+    const { name, image, loading, beforeUpload, handleUpload, handleChange, style, icon: Icon } = props;
     console.log(props);
 
 
@@ -20,11 +20,11 @@ export default function UploadFile(props) {
             onChange={handleChange}
         >
             <Spin spinning={loading}>
-                <div className={styles.userImgContainer}>
+                <div className={styles.userImgContainer} style={style}>
                     {image ?
                         <img src={image} alt="Imagen cargada" className={styles.userImg} />
                         :
-                        <FileImageOutlined className={styles.placeholder} />
+                        <Icon className={styles.placeholder} />
                     }
                 </div>
             </Spin>
