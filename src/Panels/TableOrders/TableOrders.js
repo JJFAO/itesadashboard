@@ -4,6 +4,7 @@ import styles from './tableorders.module.scss';
 import DropDownStates from '../Components/DropDownTypes/DropDownStates';
 import { fireBaseServices } from '../../utils/firebase';
 import dateFormat from 'dateformat'
+import DropDownPaid from "../Components/DropDownTypes/DropDownPaid";
 
 /* --TableOrders Component-- */
 
@@ -18,6 +19,9 @@ const TableOrders = ({ orders, shops, loading }) => {
     const handleState = (id) => (e) => {
         const state = Number(e.key);
         editProps(id, { state });
+    }
+    const handlePaid = (id) => (e) => {
+        editProps(id, { paid: e.key === '1' });
     }
 
     const editProps = (docID, prop) => {
@@ -125,7 +129,23 @@ const TableOrders = ({ orders, shops, loading }) => {
                     )
                 }
             }
-        }, {
+        },
+        {
+            title: 'Pagado',
+            dataIndex: 'paid',
+            key: 'paid',
+            filters: [
+                { text: `Pendiente`, value: false },
+                { text: `Pagado`, value: true },
+            ],
+            onFilter: (value, record) => record.paid === value,
+            render: (paid, { key }) => (
+                <DropDownPaid id={key} paid={paid}
+                                handlePaid={handlePaid}
+                />
+            )
+        },
+         {
             title: 'Estado',
             dataIndex: 'state',
             key: 'state',
