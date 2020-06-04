@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import 'firebase/firestore';
 import 'firebase/storage';
+import { message } from "antd";
 
 
 const config = {
@@ -21,6 +22,12 @@ const arrayRemove = (value) => (firebase.firestore.FieldValue.arrayRemove(value)
 
 const arrayUnion = (value) => (firebase.firestore.FieldValue.arrayUnion(value));
 
+let firstSnap = {
+    shops: true,
+    orders: true,
+    products: true,
+};
+
 const fireBaseServices = {
     setUser(userID) {
         this.userID = userID;
@@ -30,30 +37,53 @@ const fireBaseServices = {
     },
     getCollectionSnapshot(collectionID, setArrayState, setLoading) {
         if (this.userID) {
-            const collection = this.getCollectionRef(collectionID);
+            const collection = this.getCollectionRef(collectionID)
+                .where('userID', '==', this.userID);
+                
+            return collection.onSnapshot(function (snapshot) {
 
-            return collection.where('userID', '==', this.userID)
-                .onSnapshot(function (docs) {
+                /* Carga Inicial de la colección */
+                if (firstSnap[collectionID] === true) {
                     let array = [];
-                    docs.forEach(doc => {
+
+                    snapshot.forEach(doc => {
                         const element = doc.data();
                         element.key = doc.id;
                         array.push(element)
                     })
                     setArrayState(array);
-                    setLoading((prev) => ({ ...prev, [collectionID]: false }))
-                    // .onSnapshot(function (snapshot) {
-                    //     let array = [];
-                    // snapshot.docChanges().forEach(change => {
-                    //     if (change.type === "added") {
-                    //         console.log("New data: ", change.doc.data());
-                    //         const element = change.doc.data();
-                    //         element.key = change.doc.id;
-                    //         array.push(element)
-                    //     }
-                    // })
-                    // setArrayState((prev) => [ ...prev, ...array]); //mover aqui funcion para modificar el state condicionalmente
-                })
+                    firstSnap[collectionID] = false;
+                    setLoading((prev) => ({ ...prev, [collectionID]: false }));
+
+                } else {
+
+                    setArrayState(prev => {
+                        const array = [...prev];
+
+                        snapshot.docChanges().forEach(change => {
+                            const element = change.doc.data();
+                            element.key = change.doc.id;
+
+                            if (change.type === "added") {
+                                array.push(element)
+                                if (collectionID === 'orders') {
+                                    message.info('Nuevo pedido')
+                                }
+
+                            } else if (change.type === "modified") {
+                                const found = array.find(e => e.key === element.key)
+                                Object.assign(found, element)
+
+                            } else if (change.type === "removed") {
+                                const fIndex = array.findIndex(e => e.key === element.key);
+                                (fIndex >= 0) && array.splice(fIndex, 1);
+                            }
+                        })
+
+                        return (array);
+                    })
+                }
+            });
         }
     },
     getUserSnapshot(setState, setLoading) {

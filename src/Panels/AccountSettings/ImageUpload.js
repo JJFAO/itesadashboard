@@ -1,8 +1,7 @@
 import React from "react";
-import { Upload, message, Button, Spin } from 'antd';
-import { LoadingOutlined, UploadOutlined, FileImageOutlined, MobileOutlined, DesktopOutlined } from '@ant-design/icons';
+import { message } from 'antd';
+import { MobileOutlined, DesktopOutlined } from '@ant-design/icons';
 import { fireBaseServices } from "../../utils/firebase";
-import styles from './accountsettings.module.scss'
 import { beforeUpload, getBase64 } from "../../utils/uploadFiles";
 import UploadFile from "../Components/UploadFile/UploadFile";
 
@@ -31,25 +30,49 @@ export default class ImageUpload extends React.Component {
         const { images, loading } = this.props;
         const { bgImageMobile, bgImageDesktop } = images;
         this.setState({
-            [img1]: { ...this.state[img1], image: bgImageMobile, loading },
-            [img2]: { ...this.state[img2], image: bgImageDesktop, loading }
+            [img1]: {
+                ...this.state[img1],
+                image: bgImageMobile,
+                loading
+            },
+            [img2]: {
+                ...this.state[img2],
+                image: bgImageDesktop,
+                loading
+            }
         });
     }
 
     handleUpload = async (e) => {
         const { file, filename } = e;
         // const imgExt = e.file.type === 'image/jpeg' ? '.jpg' : '.png';
-        this.setState({ [filename]: { ...this.state[filename], loading: true } });
+        this.setState({
+            [filename]: {
+                ...this.state[filename],
+                loading: true
+            }
+        });
         const imageRef = fireBaseServices.getImageStorageRef().child(filename);
         const uploadTask = await imageRef.put(file);
         const imageUrl = await uploadTask.ref.getDownloadURL();
         const image = await getBase64(file, message);
 
         await fireBaseServices.updateUserDoc({ [filename]: imageUrl });
-        this.setState({ [filename]: { ...this.state[filename], image } });
+        this.setState({
+            [filename]: {
+                ...this.state[filename],
+                image
+            }
+        });
 
         setTimeout(() => {
-            this.setState({ [filename]: { ...this.state[filename], loading: false } });
+            this.setState({
+                [filename]: {
+                    ...this.state[filename],
+                    loading: false
+                }
+            });
+            message.success('Cambio guardado');
         }, 300);
     }
 
@@ -60,20 +83,20 @@ export default class ImageUpload extends React.Component {
 
         return (
             <>
-                <p style={{marginTop: '1rem'}}>
+                <p style={{ marginTop: '1rem' }}>
                     Para pantallas de PC:
                 </p>
                 <UploadFile {...props}
                     {...this.state[img2]}
-                    style={{maxHeight: '7rem', fontSize: '4rem'}}
+                    style={{ maxHeight: '7rem', fontSize: '4rem' }}
                     icon={DesktopOutlined}
                 />
-                <p style={{marginTop: '1.5rem'}}>
+                <p style={{ marginTop: '1.5rem' }}>
                     Para pantallas de celular:
                 </p>
                 <UploadFile {...props}
                     {...this.state[img1]}
-                    style={{minHeight: '19rem', fontSize: '4.7rem'}}
+                    style={{ minHeight: '19rem', fontSize: '4.7rem' }}
                     icon={MobileOutlined}
                 />
             </>

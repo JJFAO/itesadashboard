@@ -5,8 +5,6 @@ import styles from './uploadfile.module.scss'
 
 export default function UploadFile(props) {
     const { name, image, loading, beforeUpload, handleUpload, handleChange, style, icon: Icon } = props;
-    console.log(props);
-
 
     return (
         <Upload

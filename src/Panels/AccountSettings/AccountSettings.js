@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { Button, Spin } from 'antd';
+import React from 'react';
+import { Button, Spin, message } from 'antd';
 import styles from './accountsettings.module.scss'
 import { fireBaseServices } from '../../utils/firebase';
-import { useState } from 'react';
 import { ChromePicker } from 'react-color';
 import ImageUpload from './ImageUpload';
 
@@ -15,9 +14,10 @@ const AccountSettings = ({ user, setUser, loading }) => {
         setUser({ color: e.hex });
     }
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const { color } = user;
-        fireBaseServices.updateUserDoc({ color })
+        await fireBaseServices.updateUserDoc({ color });
+        message.success('Cambio guardado');
     }
 
 
@@ -48,7 +48,7 @@ const AccountSettings = ({ user, setUser, loading }) => {
             </div>
 
             <div style={{ marginTop: "2rem" }}>
-                <h3>Imagenés para la aplicación:</h3>
+                <h3>Imágenes para la aplicación:</h3>
                 <ImageUpload images={{ bgImageMobile, bgImageDesktop }} loading={loading} />
             </div>
 
