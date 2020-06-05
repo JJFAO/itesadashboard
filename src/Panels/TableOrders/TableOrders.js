@@ -96,7 +96,7 @@ const TableOrders = ({ orders, shops, loading }) => {
             title: 'Dirección',
             dataIndex: 'address',
             key: 'address',
-            render: (address) => (<span> {address} </span>)
+            render: (address, {address2}) => (<span> {address} {address2 && '- ' + address2} </span>)
         }, {
             title: 'Email',
             dataIndex: 'mail',
