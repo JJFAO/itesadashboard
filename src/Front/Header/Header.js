@@ -12,18 +12,21 @@ export default function Header({ classes }) {
         
             <div className={classes.circle}>
 
-                <nav  className={classes.navstyle}>
+                <nav className={classes.navstyle}>
                     <Toolbar>
                         <Typography className={classes.navmenu}>
                             <img src={gvlogo} className={classes.logo} alt="" />
                         </Typography>
                         <Hidden smDown>
-                        <Link to="/" className={classes.linklogin}><Button  color="inherit" >Home</Button></Link>
+                            <Link to="/" className={classes.linklogin}>
+                                <Button color="inherit" >Home</Button>
+                            </Link>
                         </Hidden>
-                        <Link to="/login" className={classes.linklogin1}><Button color="inherit"  >
-                            Login
-                       </Button> </Link>
-                        
+                        <Link to="/login" className={classes.linklogin1} style={{zIndex: '1'}}>
+                            <Button color="inherit"  >
+                                Login
+                            </Button>
+                        </Link>
                     </Toolbar>
                 </nav>
               
