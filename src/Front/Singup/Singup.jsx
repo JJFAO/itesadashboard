@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { InputAdornment, Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import StorefrontIconOutlined from '@material-ui/icons/StorefrontOutlined';
 import { CssBaseline } from "@material-ui/core";
 import IntroImage from "../IntroImage/IntroImage";
 import {firebaseApp} from "../../utils/firebase";
@@ -104,7 +105,7 @@ export default function Signup({ classes }) {
                     name="repeatPassword"
                     value={user.repeatPassword}
                     onChange={handleChange}
-                    placeholder="Repeti contraseña"
+                    placeholder="Repetí la contraseña"
                     type="password"
                     InputProps={{
                       startAdornment: (
@@ -127,7 +128,7 @@ export default function Signup({ classes }) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <LockOutlinedIcon />
+                          <StorefrontIconOutlined />
                         </InputAdornment>
                       ),
                     }}
@@ -148,7 +149,7 @@ export default function Signup({ classes }) {
               <Grid container justify="center" className={classes.margintop}>
                 <Grid item >
                   <Typography variant="subtitle1">
-                    Ya tenés cuenta?
+                    ¿Ya tenés cuenta?
             </Typography >
                 </Grid>
                 <Grid item>

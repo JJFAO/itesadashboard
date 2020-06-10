@@ -83,7 +83,7 @@ export default function Login({ classes }) {
                     name="password"
                     value={user.password}
                     onChange={handleChange}
-                    placeholder="Crea tu contraseña"
+                    placeholder="Contraseña"
                     type="password"
                     InputProps={{
                       startAdornment: (
@@ -119,7 +119,7 @@ export default function Login({ classes }) {
               <Grid container justify="center" className={classes.margintoplog}>
                 <Grid item >
                   <Typography variant="subtitle1">
-                    No tenés cuenta?
+                    ¿No tenés cuenta?
           </Typography >
                 </Grid>
                 <Grid item>
