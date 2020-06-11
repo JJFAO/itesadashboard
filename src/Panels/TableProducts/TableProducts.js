@@ -31,6 +31,7 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
         if (edit.price) { edit.price = parseInt(edit.price) }
 
         if (editable === '0') {
+            setProducts(prods => prods.filter(p => p.key !== '0'));
             await productsCollection.add(edit);
         } else {
             await fireBaseServices.updateProductDoc(id, edit);

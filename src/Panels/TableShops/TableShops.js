@@ -4,6 +4,7 @@ import styles from './tableshops.module.scss';
 import DropDownTypes from '../Components/DropDownTypes/DropDownTypes';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
 import { fireBaseServices, arrayUnion, arrayRemove } from "../../utils/firebase";
+import { useEffect } from 'react';
 
 const shopsCollection = fireBaseServices.getCollectionRef('shops');
 
@@ -13,6 +14,14 @@ const shopsCollection = fireBaseServices.getCollectionRef('shops');
 const TableShops = ({ userID, shops, setShops, products, loading }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
+
+    console.log('loop?');
+    useEffect(() => {
+        
+        return () => {
+            setShops(shops => shops.filter(s => s.key !== '0'));
+        }
+    }, [setShops])
 
 
     const handleChange = (e) => {
@@ -39,6 +48,7 @@ const TableShops = ({ userID, shops, setShops, products, loading }) => {
 
     const handleUpdate = (id) => async () => {
         if (editable === '0') {
+            setShops(shops => shops.filter(s => s.key !== '0'));
             const newShop = await shopsCollection.add(edit);
             products.forEach(({ shops, key }) => {
                 if (!shops.includes(newShop.id)) {
