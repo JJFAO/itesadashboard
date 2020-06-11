@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Table, Button, Input } from 'antd';
 import { fireBaseServices } from "../../utils/firebase";
 import styles from './tableproducts.module.scss';
 import EditableTagGroup from '../Components/EditableTagGroup/EditableTagGroup';
 import ActionsCell from '../Components/ActionsCell/ActionsCell';
+import { HomeOutlined } from '@ant-design/icons';
 
 const productsCollection = fireBaseServices.getCollectionRef('products');
 
@@ -12,7 +13,7 @@ const productsCollection = fireBaseServices.getCollectionRef('products');
 const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
     const [editable, setEditable] = useState('')
     const [edit, setEdit] = useState({})
-
+    const expandableRef = useRef({})
 
     const handleChange = (e) => {
         let { name, value } = e.target;
@@ -72,10 +73,26 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
         setEditable('0');
     }
 
+    
+    const showExpandableButton = (key) => {
+        const { current } = expandableRef;
+        if (current[key]) {
+            const c = current[key];
+            return (
+                <Button type="link"
+                    icon={<HomeOutlined />}
+                    onClick={() => {c.ref.click()}}
+                >
+                    Visibilidad en tiendas
+                </Button>
+            )
+        }
+    } 
 
     const columns = [
         {
             title: 'Nombre',
+            className: styles.columnName,
             dataIndex: 'name',
             key: 'name',
             render: (name, { key }) => (
@@ -113,7 +130,9 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
             render: (key, obj) => (
                 <ActionsCell values={{ editable, edit, id: key, obj }}
                     handlers={{ handleUpdate, handleCancel, handleDelete, handleEditable }}
-                />
+                >
+                    {showExpandableButton(key)}
+                </ActionsCell>
             )
         },
     ];
@@ -132,6 +151,15 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
                                 shopsIds={record.shops}
                                 shops={shops}
                             />
+                        ),
+                        expandIcon: ({ expanded, onExpand, record }) => (
+                            <Button type="link"
+                                ref={ref => { expandableRef.current[record.key] = { ref } }}
+                                // icon={<HomeOutlined />}
+                                onClick={e => onExpand(record)}
+                                style={{display: 'none'}}
+                            >
+                            </Button>
                         ),
                         rowExpandable: record => (record.key !== '0'),
                         expandIconColumnIndex: 4,

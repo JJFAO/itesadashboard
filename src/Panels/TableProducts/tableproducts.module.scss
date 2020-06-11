@@ -19,14 +19,19 @@
     tbody > tr:hover > td {
         background-color: #f9f0ff !important;
     }
-    thead tr th:last-child::before {
-        content: 'Tiendas';
-    }
-    tbody tr td:last-child button {
-        margin-left: 1rem;
-    }
+    // thead tr th:last-child::before {
+    //     content: 'Tiendas';
+    // }
+    // tbody tr td:last-child button {
+    //     margin-left: 1rem;
+    // }
+
     .columnMoney {
+        width: 80px;
         text-align: right;
+    }
+    .columnName {
+        width: 190px;
     }
     @media (max-width: 991px) {
         .scrollTable {

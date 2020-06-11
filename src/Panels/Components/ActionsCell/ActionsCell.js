@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Popconfirm } from 'antd'
 import { SaveOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
-const ActionsCell = ({ values, handlers }) => {
+const ActionsCell = ({ values, handlers, children }) => {
     const { edit, editable, id, obj } = values;
     const { handleUpdate, handleCancel, handleDelete, handleEditable } = handlers;
     const isDisabled = () => {
@@ -25,6 +25,7 @@ const ActionsCell = ({ values, handlers }) => {
                 <Button onClick={handleCancel} type="link" icon={<CloseCircleOutlined />}>
                     Cancelar
                 </Button>
+                {children}
             </>
         ) : (
             <>
@@ -40,6 +41,7 @@ const ActionsCell = ({ values, handlers }) => {
                         Eliminar
                     </Button>
                 </Popconfirm>
+                {children}
             </>
         )
     )
