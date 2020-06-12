@@ -65,10 +65,11 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
     const handleNew = () => {
         const allShopsIDs = shops.map(({ key }) => key)
         setEdit({
+            userID,
             name: '',
             price: '',
+            description: '',
             shops: allShopsIDs,
-            userID
         })
         setProducts([...products, { key: '0', shops: [] }])
         setEditable('0');
@@ -121,6 +122,22 @@ const TableProducts = ({ userID, products, setProducts, shops, loading }) => {
                     />
                 ) : (
                     <span className={styles.wPrice}>$ {price} </span>
+                )
+            )
+        },
+        {
+            title: 'Descripción',
+            className: styles.columnName,
+            dataIndex: 'description',
+            key: 'description',
+            render: (description, { key }) => (
+                (editable === key) ? (
+                    <Input name="description" defaultValue={description}
+                        onChange={handleChange} className={styles.w200}
+                        maxLength="45" autoComplete="off"
+                    />
+                ) : (
+                    <span> {description} </span>
                 )
             )
         },
