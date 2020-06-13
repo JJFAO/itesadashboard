@@ -73,9 +73,6 @@ export function TheApp({ userID }) {
                 }
                 extra={
                     <>
-                        <a className={styles.itesaLogo} href={'https://itesa.co'}>
-                            <img src={itesa} className={styles.title} alt="logo de itesa" />
-                        </a>
                         <Button shape="circle" type="link"
                             onClick={() => setBadge(0)}
                             icon={
@@ -83,6 +80,9 @@ export function TheApp({ userID }) {
                                     <BellOutlined style={{ fontSize: '1.5rem' }} />
                                 </Badge>}
                         />
+                        <a className={styles.itesaLogo} href={'https://itesa.co'}>
+                            <img src={itesa} className={styles.title} alt="logo de itesa" />
+                        </a>
                     </>
                 }
             />

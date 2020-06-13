@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button, Spin, message } from 'antd';
 import styles from './accountsettings.module.scss'
-import { fireBaseServices } from '../../utils/firebase';
+import { fireBaseServices, firebaseApp } from '../../utils/firebase';
 import { ChromePicker } from 'react-color';
 import ImageUpload from './ImageUpload';
+import { LogoutOutlined } from '@ant-design/icons';
 
 
 
@@ -20,6 +21,11 @@ const AccountSettings = ({ user, setUser, loading }) => {
         message.success('Cambio guardado');
     }
 
+    const handleLogOut = () => {
+        console.log('logout');
+        firebaseApp.auth().signOut();
+    }
+
 
     const userUrl = userID && (
         'https://stores.itesa.co/' + userID.replace(/\s/g, '')
@@ -28,6 +34,14 @@ const AccountSettings = ({ user, setUser, loading }) => {
 
     return (
         <div className={styles.AccountSettings}>
+
+            <Button size="small"
+                icon={<LogoutOutlined />}
+                onClick={handleLogOut}
+                className={styles.btnLogOut}
+            >
+                Cerrar Sesión
+            </Button>
 
             <div className={styles.userUrl}>
                 <p>
@@ -38,14 +52,12 @@ const AccountSettings = ({ user, setUser, loading }) => {
                 </p>
             </div>
 
-            <div>
                 <Button className={styles.btnWhats}
                     href={`https://api.whatsapp.com/send?text=${urlEncoded}`}
                     target="_blank" rel="noopener noreferrer"
                 >
                     Compartir en WhatsApp
                 </Button>
-            </div>
 
             <div style={{ marginTop: "2rem" }}>
                 <h3>Imágenes para la aplicación:</h3>
@@ -54,7 +66,7 @@ const AccountSettings = ({ user, setUser, loading }) => {
 
             <div style={{ marginTop: "2rem" }}>
                 <p>Color de Tema:</p>
-                <Spin spinning={loading} delay="150" style={{width: '200px'}}>
+                <Spin spinning={loading} delay="150" style={{ width: '200px' }}>
                     <ChromePicker
                         width="198px"
                         onChangeComplete={handleChange}

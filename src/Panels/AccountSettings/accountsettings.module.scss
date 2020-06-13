@@ -1,6 +1,6 @@
 .AccountSettings {
   .userUrl {
-    margin: 2rem 0;
+    margin: 3.5rem 0 2rem;
   }
   .btnWhats {
     background-color: #33de53;
@@ -16,7 +16,7 @@
     border-color: #67ff83;
   }
   .btnSave,
-  .btnWhats {
+  .btnWhats, .btnLogOut {
     width: 12.6rem;
   }
   .inputColor {
@@ -30,6 +30,9 @@
   }
   .btnSave {
     margin-top: 2rem;
+  }
+  .btnLogOut {
+    margin-top: 0.8rem;
   }
 
 }
